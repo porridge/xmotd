@@ -4,11 +4,33 @@
 #export DH_VERBOSE=1
 export DH_COMPAT=3
 
+
+#########################################################################
+#
+# Pay attention to $(DEB_BUILD_OPTIONS)
+#
+# By default use -g -Wall -O2 and strip binaries:
+CDEBUGFLAGS = -g -Wall
+# 
+# * if noopt   is specified, use -O0 instead of -O2
+# 
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+ CDEBUGFLAGS += -O0
+else
+ CDEBUGFLAGS += -O2
+endif
+#
+# * if nostrip is specified, don't strip
+#    (The upstream makefile doesn't strip, so dh_strip takes care of it
+#    appropriately)
+#
+#########################################################################
+
 build: build-stamp
 build-stamp:
 	dh_testdir
 	xmkmf
-	$(MAKE)
+	$(MAKE) CDEBUGFLAGS="$(CDEBUGFLAGS)"
 	touch build-stamp
 
 clean:

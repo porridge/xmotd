@@ -2,8 +2,8 @@ Source: xmotd
 Section: x11
 Priority: optional
 Maintainer: Marcin Owsiany <porridge@debian.org>
-Standards-Version: 3.5.5
-Build-Depends: debhelper (>= 3), libxaw-dev, xlibs-dev, xutils
+Standards-Version: 3.5.8
+Build-Depends: debhelper (>= 3), libxaw7-dev | libxaw-dev, xlibs-dev, xutils
 
 Package: xmotd
 Architecture: any
