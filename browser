@@ -1,0 +1,35 @@
+#!/bin/sh
+#============================================================================
+# SYNOPSIS
+#	browser URL
+#
+# DESCRIPTION
+# 	browser opens a specified URL in an already open browser or launches 
+#	a new browser if none is currently running. 
+#
+#	xmotd call browser to open URL then waits for the browser to exit.
+#	Hence browser MUST return after opening the specified URL. 
+#
+# AUTHOR
+#   Stuart A. Harvey <sharvey@primenet.com>
+#============================================================================
+
+URL=$1
+TOOLWAIT=xtoolwait
+BROWSER=${BROWSER:-/usr/local/bin/netscape}
+REMOTE=-remote
+
+#----------------------------------------------------------------------------
+# Direct an open browser to the specified URL 
+#
+
+${BROWSER} ${REMOTE} "OpenURL(${URL})"
+status=$?
+
+if [ ${status} -ne 0 ]; then
+	xtoolwait ${BROWSER} ${URL}
+	status=$?
+        [ ${status} -ne 0 ] && sleep 3
+fi
+
+exit ${status}

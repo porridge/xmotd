@@ -1,7 +1,7 @@
-/*$Id: xmotd.c,v 1.17 1996/09/09 16:08:08 elf Exp $*/
+/*$Id: xmotd.c,v 1.18 1997/06/23 17:50:37 elf Exp $*/
 
 /*
- * Copyright 1993, 1994, 1995, 1996 Luis Fernandes <elf@ee.ryerson.ca> 
+ * Copyright 1994-97 Luis Fernandes <elf@ee.ryerson.ca> 
  *
  * Permission to use, copy, hack, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -11,7 +11,22 @@
  * without any implied or written warranty.
  *
  */
-
+/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * 
+ */
 #include <stdio.h>
 #include <malloc.h>
 #include <time.h>
@@ -68,45 +83,11 @@ extern XtIntervalId timer;
 
 char *txtbuf;					/* file is loaded into this malloc'd pointer */
 
-#if 0
-/* remembers which message in argv[] was displayed first. When user
-   presses "Next Message" we continue from here.*/
-extern int msgindex;	
-
-/* a count of the number of messages we will be displaying; i.e. those
-   that are new, from all the total supplied on the command-line */
-extern int numsg;
-
-/* array of pointers to the motds requested to be displayed */   
-char **msgs;
-
-
-extern struct _resources {
-  int always;
-  int pto;		
-  int usedomains;	
-  int showfilename;
-  					
-  int paranoid;		
-  int periodic;	  				
-  
-  String warnfile;	
-  String logo;	
-  String stampfile;	
-
-} app_res;
-
-#endif
 
 void 
 /*ARGSUSED*/
 nextMessage(Widget w, caddr_t call_data, caddr_t client_data)
 {
-#if 0
-  register int start=0;
-  register int i;
-  struct stat motdstat;
-#endif
 
   char buffer[256];
   time_t ftime= time((time_t *)NULL);
@@ -279,3 +260,4 @@ displayMessage(char *filename)
   return(1);
   
 }/* displayMessage*/
+

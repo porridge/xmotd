@@ -1,7 +1,7 @@
-/* $Id: textmode.c,v 1.5 1996/09/09 18:46:55 elf Exp $ */
+/* $Id: textmode.c,v 1.7 1998/11/03 22:24:31 elf Exp $ */
 
 /*
- * Copyright 1993, 1994, 1995, 1996 Luis Fernandes <elf@ee.ryerson.ca> 
+ * Copyright 1993-97 Luis Fernandes <elf@ee.ryerson.ca> 
  *
  * Permission to use, copy, hack, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -10,6 +10,23 @@
  * in supporting documentation.  This application is presented as is
  * without any implied or written warranty.
  *
+ */
+
+/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * 
  */
 
 #include <stdio.h>
@@ -40,9 +57,7 @@ char **argv;
   
   while(1)
 	{
-
 	  sprintf(buf, "%s/%s", getenv("HOME"), stampfile);
-
 	  
 	  for(i=1; i<argc; i++)
 		{
@@ -64,11 +79,9 @@ char **argv;
 					}
 
 				  stat(argv[i],&motdstat);
-
 				  if(!motdstat.st_size) continue; /* ignore zero-length files */
 			  
 				  txtbuf=(char *)calloc(1, (motdstat.st_size+1)*sizeof(char));
-			  
 				  if(!txtbuf)
 					{
 					  perror("xmotd");
@@ -100,21 +113,16 @@ char **argv;
 				  sprintf(buf, "%s/%s", getenv("HOME"), stampfile);
 /*				  fprintf(stderr, "stampfile is %s", buf);*/
 
-				  
 				}
 			  else if(!strcmp((argv[i]), "-wakeup"))
 				{
-
 				  /* next param is the period in hrs==> convert to
 					 seconds*/
 				  sleepPeriod=(atof(argv[i+1])*3600.0);	
-
 				  i++;
-				  
 				}
 			  else
 				{
-				  
 				  fprintf(stdout, "%s: WARNING, ignoring %s\n", argv[0], argv[i]);
 				}
 			  
@@ -125,7 +133,6 @@ char **argv;
 	  if(displayed)
 		{
 /*		  fprintf(stderr, "Displayed file(s)\n");*/
-
 		  updateTimeStamp(buf);		/* reset the timestamp after all files 
 									   have been read*/ 
 		}
@@ -135,13 +142,13 @@ char **argv;
 		  int fd;
 		  
 		  if(fork()) exit(0);
-		  
 		  sleep((unsigned)sleepPeriod);
 		  
 		  /* Check if user is still logged-in by trying to open
-			 "/dev/tty". If we can't open the controlling terminal then
-			 the user has logged-out (W. Richard Stevens _Advanced Unix
-			 Programming_) and xmotd can exit. */
+			 "/dev/tty". If we can't open the controlling terminal
+			 then the user has logged-out (W. Richard Stevens
+			 _Advanced Programming in the Unix Environment_) and xmotd
+			 can exit. */
 		  
 		  if((fd=open("/dev/tty", O_RDONLY, O_RDONLY)<0))
 			{
@@ -149,9 +156,7 @@ char **argv;
 		  }
 		  
 		  close(fd);
-		  
 		  displayed=0;			/* reset the flag  */
-
 		}
 	  else
 		{

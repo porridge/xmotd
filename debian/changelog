@@ -1,3 +1,39 @@
+xmotd (1.16-3) unstable; urgency=low
+
+  * Added missing libxaw-dev to Build-Depends.
+
+ -- Josip Rodin <jrodin@jagor.srce.hr>  Mon, 16 Jul 2001 01:57:53 +0200
+
+xmotd (1.16-2) unstable; urgency=low
+
+  * Fixed Maintainer entry (doh!).
+  * Upped the priority to optional, to match the override file.
+
+ -- Josip Rodin <jrodin@jagor.srce.hr>  Sun, 15 Jul 2001 02:03:55 +0200
+
+xmotd (1.16-1) unstable; urgency=low
+
+  * "New" upstream version. It's not built with HTML support because
+    that part of the code is non-free.
+  * Alleviated the assumption that hppa is HP-UX, closes: #105084.
+  * Added a menu file, closes: #76973.
+  * Made XMotd.ad a symlink, not a copy of XMotd.
+  * Install the binary in /usr/bin.
+  * Added Build-Depends, other polishing.
+
+ -- Josip Rodin <jrodin@jagor.srce.hr>  Sat, 14 Jul 2001 13:58:51 +0200
+
+xmotd (1.14b3-2) unstable; urgency=low
+
+  * Fixed app-defaults location, Closes: #86319
+  * Since the maintainer of the package made only one release, in 1996,
+    and there have been 2 NMU's since, it's orphaned. Set maintainer to
+    debian-qa.
+  * Converted to debhelper, since it was the quickest way to
+    get it to fully comply with current policy.
+
+ -- Joey Hess <joeyh@debian.org>  Fri, 16 Mar 2001 21:56:33 -0800
+
 xmotd (1.14b3-1.2) unstable; urgency=low
 
   * Correct placement of documentation

@@ -1,0 +1,2 @@
+?package(xmotd): needs=X11 section="Apps/Viewers" title="Xmotd" \
+ command="xmotd /etc/motd"

@@ -1,8 +1,7 @@
-!XMotd: Motif app-defaults for xmotd 1.13
+!XMotd: Motif app-defaults for xmotd 1.15
 
 !TITLE
 !Use a backslash to quote leading spaces in the title
-
 *title*labelString: \       This is the\nMessage of the Day\n\n
 
 !BITMAP
@@ -10,13 +9,11 @@
 !resource and correct the path- and file-name to point to the location
 !of your X-bitmap file. N.B.: the bitmap can also be specified with the 
 !"-bitmaplogo" command-line option.
-
 !*BitmapLogo: /usr/local/site.bm
 
 !overall-colour
 *form.background: lightsteelblue3
 
-!Used for a regular Text widget
 !The text-box that displays the motd
 *text.rows: 25
 *text.columns: 80
@@ -42,7 +39,7 @@
 *logo*background: lightsteelblue3
 *logo*borderColor: lightsteelblue3
 !The logo has a damned border which the following resource is 
-!supposed to eliminate. But IT DOESN'T THIS WORK?!!!!
+!supposed to eliminate. But it doesn't work!
 *logo*borderWidth: 0
 
 !The horizontal line
@@ -58,5 +55,5 @@
 *quit.fontList: -*-times-bold-i-*-*-*-240-*
 !(unfortunately the "Next Message" string is hard-coded)
 *quit.labelString: Dismiss
-*quit*foreground: lightcyan
+*quit*foreground: dodgerblue4
 *quit*background: lightsteelblue3

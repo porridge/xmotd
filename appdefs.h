@@ -1,9 +1,11 @@
+/* $Id: appdefs.h,v 1.3 1999/08/20 23:45:22 elf Exp $ */
 
 #ifdef MOTIF
 
 String fallback_resources[] = { 
+  "*form.foreground: black",
   "*form.background: lightsteelblue3",
-  "*text*fontList: -*-times-medium-r-*-*-*-140-*", 
+  "*text*fontList: -*-times-bold-r-*-*-*-140-*", 
   "*text*background: lightsteelblue1", 
 
 #ifdef HAVE_HTML
@@ -35,8 +37,8 @@ String fallback_resources[] = {
 
   "*quit.fontList: -*-times-bold-i-*-*-*-240-*",
   "*quit.labelString: Dismiss",
-  "*quit*foreground: lightcyan",
-  "*quit*background: lightsteelblue3",
+  "*quit*foreground: dodgerblue4",
+  "*quit*background: lightsteelblue1",
   NULL,
 };
 
@@ -44,9 +46,10 @@ String fallback_resources[] = {
 
 String fallback_resources[] = { 
 /*  "*shell.geometry: +20+20",*/
+  "*form.foreground: black",
   "*form.background: lightsteelblue3",
   "*shapeStyle: oval",
-  "*Text*font: -*-times-medium-r-*-*-*-140-*",
+  "*Text*font: -*-times-bold-r-*-*-*-140-*",
   "*text*background: lightsteelblue1", 
 
 #ifdef HAVE_HTML
@@ -83,8 +86,8 @@ String fallback_resources[] = {
 
   "*quit.font: -*-times-bold-r-*-*-*-240-*",
   "*quit.label: Dismiss",
-  "*quit*foreground: lightcyan",
-  "*quit*background: lightsteelblue3",
+  "*quit*foreground: dodgerblue4",
+  "*quit*background: lightsteelblue1",
   NULL,
 };
 #endif

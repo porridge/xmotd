@@ -1,120 +1,79 @@
-XMOTD 1.14 (beta3)                                    Oct. 8, 1996
-                                                      Toronto
- 
-xmotd is a message-of-the-day browser for X11 and dumb-terminals.
+XMOTD 1.16 README
 
-Briefly, it features:
+December, 1999
+Luis Fernandes, <elf@ee.ryerson.ca>
+Toronto, Canada
 
-   o a customizable bitmap and title text;
+xmotd is a message-of-the-day browser for X11 and
+dumb-terminals. Refer to: http://www.ee.ryerson.ca/~elf/xmotd/ for
+details.
 
-   o multiple messages can be displayed sequentially; 
+WHAT'S NEW
 
-   o sleep and periodically wake-up to check if the motd(s) change and
-     display them;
- 
-   o warning-message support;
+ o xmotd checks whether another copy of itself is already running and
+   exits if there is (this usually happened when xmotd was run with
+   -wakeup and a user logged in and out multiple times within the
+   sleep-duration).
 
-   o builds for either Motif and Athena widget libraries;
+ o xmotd now supports the Editres protocol (i.e. X resources may be
+   edited via editres(1)).
 
-   o display messages with HTML mark-up.
+ o -tail option allows the end of files to be watched; the text will
+   scroll to the bottom when xmotd pops up.
 
-NEW FEATURES SINCE 1.14 beta2
+REQUIREMENTS
 
-   - Bug fix. xmotd would exit prematurely when -wakeup was specified
-	 and ~/.xmotd did not exist.
+xmotd requires, a C compiler and at minimum, X11R5 including Xt (the X
+Toolkit) for the resource and command-line parsing functions, and the
+Athena widget (Xaw) libraries. Optionally, Xm (the Motif toolkit)
+should be installed if you wish to compile the Motif version; the Xpm
+library should be installed if you wish to compile-in support for
+colour logos.
 
+The HTML library is not included with the 'lite' distribution.
 
-BUILDING xmotd
-
-xmotd may be built in different flavours:
-	- with the Athena widget library (default), or;
-	- with Athena & HTML widget, or;
-	- with the Motif widget library, or;
-	- with Motif and HTML widget.
-
-All the flavours can be built from the single distribution. It's just
-a matter of defining the correct parameters in the Imakefile and
-compiling.
+BUILDING
 
 First, unpack the distribution with:
 
-	zcat xmotd-1.14.tar.Z | tar xvf -
+    zcat xmotd-1.16.tar.gz | tar xvf -
 
-A directory called xmotd-1.14 will be created; cd into that directory.
+A directory called xmotd-1.16 will be created; cd into that
+directory and to build the default flavour type:
 
-If you want to build the plain Athena version skip down to the
-COMPILING section, below.
+    xmkmf -a; make all
 
-CONFIGURING FOR HTML SUPPORT
+Note: If your xmkmf does not support the -a option
+(e.g. /usr/openwin/bin/xmkmf), type:
 
-If you want to build xmotd with HTML support, edit the Imakefile and
-un-comment (by deleting the word XCOMM & 1 space that follows it)
+   xmkmf; make makefiles; make all
 
-	- "#define HAVE_HTML"
+xmotd can be built in different flavours:
+    - with the Athena widget library (default), or;
+    - with Athena & HTML widget, or;
+    - with the Motif widget library, or;
+    - with Motif and HTML widget.
 
-CONFIGURING FOR MOTIF SUPPORT
+Refer to the commentary in the Imakefile for details on customizing
+the build for HTML, Motif and XPM support.
 
-If you want to build xmotd with Motif libraries, edit the Imakefile
-and un-comment (by deleting the word XCOMM & 1 space that follows it)
+After the compilation is complete (ignore compilation warnings when
+the HTML widget is being compiled) and if you wish to install xmotd
+automatically, type:
 
-	- "#define MOTIF"
-
-COMPILING
- 
-     1. type: xmkmf
-
-     2. type: make Makefiles
-     
-     3. type: make all
-
-  NOTE: If you are building with HTML and Athena support, use:
-
-	 3. type: make all EXTRA_DEFINES="-DHAVE_HTML"
-
-  OR if you are building with both HTML and Motif support, use:
-
-	 3. type: make all EXTRA_DEFINES="-DMOTIF -DHAVE_HTML"
-
-After the compilation is complete (there will be some compilation
-warnings when the HTML widget is being compiled; ignore them),
-
-    4. type: make install
-
-if you wish to install xmotd automatically.
- 
-(If you do not have imake on your system, edit the supplied Makefiles
-(it'll be painful) and then continue with step 2.)
-
-Xmotd requires Xt (the X Toolkit) for the resource and command-line
-parsing functions, and the Athena widget (Xaw) libraries. Xm (the
-Motif toolkit) is required if you wish to compile the Motif version of
-xmotd.
+    make install
 
 PLATFORMS
 
-xmotd (default) has been sucessfully compiled under SunOS 4.1.3_U1 and
-Solaris 2.5. The Motif build requires some tinkering with the
-definitions in the Imakefile; I'm still working on this.
+xmotd was developed on a Sun SPARCstation 5 under X11R6.3 using gcc
+2.7.1 and emacs 19.34 and gdb. It has been sucessfully compiled under
+SunOS 4.1.4, Solaris 2.5.1 and 2.6 and Linux 2.30.
 
-Versions after 1.9 were developed and tested on a Sun LX running SunOS
-4.1.3_U1 under X11R6pl4 using gcc and emacs-19.28. For xmotd 1.10 and
-beyond, you will need, X11R5 at minimum.
-
-xmotd, compiled under SunOS, has been successfully run under Solaris
-2.3 in backwards-compatibility mode.
-
-xmotd has been successfully compiled on the following platforms:
+xmotd has also been successfully compiled on the following platforms:
 
     HP 9000/735 running HP-UX 9.03 (X11R5).  
-
-    IBM RS6000 running AIX 3.2.4 (X11R5)
-
-    Intel 486/66 running Linux 1.1.18 (X11R5)
-
-    Sun SPARCstation 2 running SunOS4.1.1B (X11R6)
-
+    IBM RS/6000 model C10 (PowerPC) running AIX v3.2.5.
     Silicon Graphics INDY running Irix 5.3 (X11R5)
-
     Mips/CDC (running EPIX) and PCS/M68030 (running MUNIX/SysV). 
 
 MANIFEST
@@ -123,120 +82,46 @@ This distribution contains the following files:
 
         README                  (this file)
         ACKNOWLEDGEMENTS        (contributors to xmotd)
+        GNU                     (Terms of GPL)
         Imakefile               (X Consortium's gift to humanity)
         Makefile                (...3 guesses)
         XMotd                   (app-defaults)
         XMotd_motif             (Motif app-defaults)
         xmotd.8                 ([nt]roff man-page)
         xlogo.bm                (default bitmap, the "X"-logo)
+        xlogo.xpm               (default pixmap used w/ xpm support)
         *.c, *.h                (source)
         patchlevel.h            (version tag)
-        libhtmlw/               (NCSA HTML widget)
+        browser                 (shell script)
+        libhtmlw/               (NCSA HTML widget; not in 'lite' version)
 
 
-When xmotd runs (under both X11 and dumb-terminals), it creates a
-time-stamp file (called ".xmotd", by default) in the user's
-home-directory. It uses the date of this file to check whether the
-motd has changed. If the date of the message-file is later than the
-date on the ~/.xmotd time-stamp-file, then xmotd will display the
-message; otherwise it will silently exit.
+xmotd has many options. Refer to the man-page for further details on
+customizing and more examples showing xmotd in use. You can read the
+man-page, without installing it, with the following command:
 
-
-RUNNING xmotd FROM THE SYSTEM Xsession FILE (VIA xdm)
-
-xmotd is meant to be run from the system Xsession file by xdm, after a
-successful login. This Xsession file is in
-
-        $ProjectRoot/lib/X11/xdm/Xsession 
-
-(where $ProjectRoot is /usr/X11R6 or /usr).
-
-The message-of-the-day file is passed to xmotd as the last option
-after any other command-line options:
-
-        xmotd -geometry +20+20 /usr/local/motd
-
-When xmotd is supplied with more than one file on the command-line,
-it will selectively display only those files which have a
-modification date later than that of the time-stamp. A "Next Message"
-button is available to proceed forward through the list of messages;
-the button changes to "Dismiss" when the last message is displayed.
-
-With the -warnfile option, xmotd is capable of displaying a file
-containing a standard warning message used to warn users of the
-consequences of deviance and sundry unlawful things they should not
-even think of doing on your network. This file can be displayed only
-when xmotd has a new message to display or optionally, at every
-login.
-
-In the following example, all the files in the directory
-/usr/local/messages/ will be checked for modification times greater
-than the time-stamp and only those files will be displayed:
-
-        xmotd -geometry +20+20 -wakeup 1 /usr/local/messages/
-
-When more than one file is to be displayed, the user is required to
-press the "Next Message" button to view the next message. When the
-last message is displayed, the button reads "Dismiss".
-
-After all the files are displayed, and the user presses "Dismiss"
-xmotd will sleep for one hour (-wakeup 1), then wakeup and check the
-directory for changes and pop-up again if any of the files have
-changed (or new files have been added).
-
-It can also be configured to pop-down automatically, without
-user-intervention, after a specified delay (in seconds) using the
--popdown option.
-
-RUNNING xmotd FROM .login
-
-xmotd can also be run from a user's ~/.login file. xmotd defaults to
-text-mode mode when it fails to connect with an X server (i.e. the
-DISPLAY environment variable is not set, login via dialup-lines, etc.). 
-
-Note that -stampfile and -wakeup are the only two command-line
-options recognized in text-only mode.
-
-TIMESTAMPS WITH DOMAINS
-
-In cases where user's home-directories are shared (NFS mounted) across
-various domains, xmotd supports domain-name based time-stamping when
-run with "-usedomains" option. xmotd creates time-stamps with
-domain-names appended and checks the dates of these "special"
-time-stamps (depending on the current domain) with that of the
-message-of-the-day.
+    nroff -man xmotd.8 | less
 
 APP-DEFAULTS
 
-Default resources (app-defaults) are compiled into xmotd as fall-back
-resources so it is NOT necessary to install the supplied app-defaults
-file.
+xmotd can be customized via editres.
 
-You can customize the resource with the supplied app-defaults file,
-XMotd (XMotd_motif, for the Motif version; rename it XMotd before
-installing and comment-out appropriate resources if building with HTML
-support), and install it in:
+Reasonably adequate application defaults are compiled into xmotd so it
+is NOT necessary to install the supplied app-defaults file.
+
+You can also customize the resources with the supplied app-defaults
+file, XMotd. The Motif version is called XMotd_motif; rename it XMotd
+before installing and comment-out appropriate resources if building
+with HTML support. The app-defaults file installs in:
 
          $ProjectRoot/lib/X11/app-defaults/XMotd
 
-Note that all resources are available as command-line option equivalents.
-
-CUSTOMIZING THE BITMAP
-
-By default, xmotd displays the X-logo as the bitmap in the top-left
-corner. Your organization's logo, rendered as an X-bitmap, may be
-specified, either via a command-line option (-bitmaplogo) or as an
-app-defaults resource, "*BitmapLogo". This resource specifies the
-absolute path to the filename containing the X-bitmap. Ideally, the
-the bitmap's dimensions should be 100x100 pixels.
-
-Refer to the man-page for further details on customizing fonts and
-more examples of showing xmotd in use.
-
+All resources are available as command-line option equivalents so
+xmotd may be customized completely via the command-line.
 
 COPYRIGHT (xmotd)
 
-xmotd Copyright 1993 (as xbanner), 1994, 1995, 1996 Luis Fernandes
+xmotd Copyright 1993 (as xbanner), 1994-97, 1999 Luis Fernandes
 
 Permission to use, copy, hack, and distribute this software and its
 documentation for any purpose and without fee is hereby granted,
@@ -245,6 +130,20 @@ that both that copyright notice and this permission notice appear in
 supporting documentation.
 
 xmotd IS PRESENTED AS IS, WITHOUT ANY IMPLIED OR WRITTEN WARRANTY.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 COPYRIGHT (HTML widget)
 

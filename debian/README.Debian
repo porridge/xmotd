@@ -1,5 +1,5 @@
-xmotd for DEBIAN
-----------------------
+xmotd for Debian
+----------------
 
 Xmotd is a message-of-the-day browser for X11 (with additional sysvnews-like
 support for dumb terminals).  It displays a customizable message box which
@@ -13,4 +13,4 @@ initiating the X session.
 Due to the large number of possible installation methods, this package does
 not install itself.
 
- <kaszeta@me.umn.edu>, Wed, 23 Oct 1996 13:03:02 -0500
+ -- Richard Kaszeta <kaszeta@me.umn.edu>, Wed, 23 Oct 1996 13:03:02 -0500
