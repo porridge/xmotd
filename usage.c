@@ -1,6 +1,6 @@
-/* $Id: usage.c,v 1.6 1999/11/23 22:59:46 elf Exp $ */
+/* $Id: usage.c,v 1.8 2003/02/14 00:34:14 elf Exp $ */
 /*
- * Copyright 1994-97, 1999 Luis Fernandes <elf@ee.ryerson.ca> 
+ * Copyright 1994-97, 1999, 2003 Luis Fernandes <elf@ee.ryerson.ca> 
  *
  * Permission to use, copy, hack, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -29,13 +29,17 @@
 #include <stdio.h>
 
 #include "maindefs.h"
+#include "patchlevel.h"
 
 void
 printUsage(str)
 char *str;
 {
 
+  fprintf(stderr, "This is xmotd %d.%d %s\n", RELEASE, PATCH, STATUS);
+
   fprintf(stderr, USAGESTRING, str);
+
   fprintf(stderr, "\nValid options are:\n");
 
   fprintf(stderr, "   -help             display this message\n");
@@ -62,7 +66,7 @@ char *str;
   fprintf(stderr, "   -wakeup #.#       every # hours, check motd(s) for changes\n");
   fprintf(stderr, "   -warnfile file    show the warning message in \"file\" before motd(s)\n");
   fprintf(stderr, "   -atom name        register xmotd with \"name\"\n");
-  fprintf(stderr, "   -tail             scroll & display end of file\n");
+  fprintf(stderr, "   -tail             scroll & display end of motd file(s)\n");
 
   fprintf(stderr, "\n");
   exit(1);

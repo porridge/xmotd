@@ -1,3 +1,9 @@
+xmotd (1.17.3b-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Marcin Owsiany <porridge@debian.org>  Thu, 10 Jul 2003 13:19:08 +0200
+
 xmotd (1.16.0.1-2) unstable; urgency=low
 
   * Workaround a bug in sbuild by specifying a non-pure-virtual package in

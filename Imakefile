@@ -1,4 +1,4 @@
-XCOMM BUILD INSTRUCTIONS:
+XCOMM BUILD INSTRUCTIONS (ALSO SEE NOTES):
 XCOMM -------------------
 XCOMM Step 1. xmkmf -a
 XCOMM Step 2. make all 
@@ -60,7 +60,7 @@ XCOMM          CC = purify gcc
 
              SRCS = main.c xmotd.c changed.c textmode.c usage.c browser.c logo.c atom.c
              OBJS = main.o xmotd.o changed.o textmode.o usage.o browser.o logo.o atom.o
-            INCLS = maindefs.h patchlevel.h appdefs.h main.h
+            INCLS = maindefs.h appdefs.h main.h
 
       CDEBUGFLAGS = -g
         MANSUFFIX = 8
@@ -70,8 +70,8 @@ XCOMM          CC = purify gcc
 					$(SRCS) $(INCLS)
 
 XCOMM No space after the equals-sign
-              VER =1.16
-             LITE =1.16
+              VER =1.17.3b
+             LITE =1.17.3b
 
 .PRECIOUS: distrib
 
@@ -130,11 +130,14 @@ distrib: $(MANIFEST)
 lite: $(MANIFEST)
 	./distrib lite
 
+XCOMM Generate man-page
 man: xmotd.8
-	rm -f xmotd-man.html xmotd-man.ps;
-#	nroff -man xmotd.8 | man2html >xmotd-man.html;
-	troff -man xmotd.8 | dpost >xmotd-man.ps;
+	rm -f xmotd-man.ps;
+	troff -mansun xmotd.8 |dpost >xmotd-mansun.ps
 
 xmotd.man: xmotd.8
-	ln $< $@
+	cp $< $@
 
+XCOMM This target builds the java distribution, Wed Sep 26 19:24:51 2001
+java-distrib:
+	tar zcvf jmotd-0.55.tar.gz jmotd/README jmotd/logo.gif jmotd/xmotd* jmotd/HistoryItem*

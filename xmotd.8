@@ -1,4 +1,4 @@
-.\" $Id: xmotd.8,v 1.9 1999/11/23 22:58:25 elf Exp elf $"
+.\" $Id: xmotd.8,v 1.11 2003/02/14 00:31:02 elf Exp $"
 .TH XMOTD 8 "Nov 24 1999" "X11 Release 6.4"
 .SH NAME
 xmotd \- message-of-the-day browser for X (and dumb terminals,
@@ -9,16 +9,11 @@ VT100, etc.)
 [\fBX-toolkit options\fP] [\fBxmotd-options\fP] \fIfile\fP
 [\fIfile2\fP ... ]
 
-.LP
-or
-.LP
-
 .B /usr/bin/xmotd 
 [\fBX-toolkit options\fP] [\fBxmotd-options\fP] \fIdirectory\fP
 
-.LP
+.PP
 or (in text-mode)
-.LP
 
 .B /usr/bin/xmotd
 [\fB-stampfile\fP \fIstamp-file\fP] [\fB-wakeup\fP \fIsleep-period\fP]
@@ -39,86 +34,117 @@ of the day. The date of the message (and optionally, the filename) is
 displayed just above the text.
 
 .LP
-\fBxmotd\fP can be configured to run in various modes: to always
-pop-up after login or to pop-up only when the motd changes; to
-pop-down automatically (without user-intervention) after a specified
-delay; to run in the background and periodically check if the motd
-has changed and display it. By default, \fBxmotd\fP displays a
-message only if the file(s) was updated since the last time the user
-read it.
+.B xmotd
+can be configured to run in various modes: to always pop-up after
+login or to pop-up only when the motd changes; to pop-down
+automatically (without user-intervention) after a specified delay; to
+run in the background and periodically check if the motd has changed
+and display it. By default, 
+.B xmotd
+displays a message only if the file(s) was updated since the last
+time the user read it.
 
 .LP
-If \fBxmotd\fP has to display more than one file, the user is obliged
-to press the \fI"Next Message"\fP button to view subsequent messages;
-the text of the button changes to \fI"Dismiss"\fP when the last
-message is displayed.
+If 
+.B xmotd
+has to display more than one file, the user is obliged to press the
+\fI"Next Message"\fP button to view subsequent messages; the text of
+the button changes to \fI"Dismiss"\fP when the last message is
+displayed.
 
 .LP
-\fBxmotd\fP defaults to text-only mode (output to \fBstdout\fP) when
-it cannot connect to an X display. This mode is useful for running
-\fBxmotd\fP from user's \fI~/.login\fP file in cases where they can
-also login via dialup.
+.B xmotd
+defaults to text-only mode (output to 
+.B stdout
+when it cannot connect to an X display. This mode is useful for
+running
+.B xmotd
+from user's
+.I ~/.login
+file in cases where they can also login via dialup.
 
 .LP
-This version of \fBxmotd\fP cannot display messages marked-up with HTML
-and xpm colour pixmap logos, because that code did not comply with Debian Free
-Software Guidelines.
+This version of
+.B xmotd
+cannot display messages marked-up with HTML and xpm colour pixmap
+logos, because the code that provided that functionality does not
+comply with Debian Free Software Guidelines.
 
 .SH OPERATION
 .LP
-\fBxmotd\fP is usually run from the system \fIXsession\fP file via
-xdm(1), CDE login and/or from the user's \fI~/.login\fP file. At
-sites where xdm is not used, \fBxmotd\fP may be run from the user's
-\fI~/.xinitrc\fP where a (possibly) malicious user may intentionally
-or accidently remove the \fBxmotd\fP invocation from the file.
+.B xmotd
+is usually run from the system \fIXsession\fP file via xdm(1), CDE
+login and/or from the user's
+.I ~/.login
+file. At sites where xdm is not used, \fBxmotd\fP may be run from the
+user's
+.I ~/.xinitrc
+where a (possibly) malicious user may intentionally or accidently
+remove the \fBxmotd\fP invocation from the file.
 
 .LP
-When \fBxmotd\fP first runs, it creates a timestamp file (by default
-called \fI.xmotd\fP) in the user's home-directory. On subsequent
-invocations, \fBxmotd\fP uses the date of this file to decide whether
-or not the message-of-the-day (motd) files have been updated. If the
-date of the motd file is later than the date on the \fI~/.xmotd\fP
-file, then \fBxmotd\fP will display the motd file; otherwise it will
-silently exit (if there are no more files to be displayed and if
-\fB-wakeup\fP was not used). When invoked with \fB-wakeup\fP, xmotd
-daemonizes itself and goes to sleep for the specified sleep-period,
-periodically waking-up to see if the motds have changed and then
-displaying them.
+When 
+.B xmotd
+first runs, it creates a timestamp file (by default called
+.I .xmotd
+) in the user's home-directory. On subsequent invocations,
+.B xmotd
+uses the date of this file to decide whether or not the
+message-of-the-day (motd) files have been updated. If the date of the
+motd file is later than the date on the \fI~/.xmotd\fP file, then
+.B xmotd
+will display the motd file; otherwise it will silently exit (if there
+are no more files to be displayed and if \fB-wakeup\fP was not
+used). When invoked with \fB-wakeup\fP, xmotd daemonizes itself and
+goes to sleep for the specified sleep-period, periodically waking-up
+to see if the motds have changed and then displaying them.
 
 .LP
-By default, \fBxmotd\fP pops-down only when the \fI"Dismiss"\fP
-button is clicked; the rest of the login-procedure then
-continues. This interactive behaviour can be overriden so \fBxmotd\fP
+By default, 
+.B xmotd
+pops-down only when the \fI"Dismiss"\fP button is clicked; the rest
+of the login-procedure then continues. This interactive behaviour can
+be overriden so 
+.B xmotd
 will pop-down without user intervention, after a specified timeout
 period.
 
 .SH OPTIONS
-All the standard \fBX\fP options are valid. In addition, the
-following options, which may also be set as resources in the
-app-defaults file (See RESOURCES), are available:
+All the standard 
+.B X
+options are valid. In addition, the following options, which may also
+be set as resources in the app-defaults file (See RESOURCES), are
+available:
 
 .TP 8
-\fB-always\fP
+.BI \-always
 
-overrides \fBxmotd\fP's default behavior; the \fI~/.xmotd\fP
-time-stamp is ignored and the message (or messages) is always
-displayed. Zero-length (empty) files are displayed when this option
-is specified.
-
-.TP 8
-\fB-atom\fP \fIatom-name\fP 
-
-register \fBxmotd\fP with name \fIatom-name\fP. By default, only one
-\fBxmotd\fP is allowed to run (per user). You can permit multiple
-instances of \fBxmotd\fP to run by giving each instance an unique
-name. \fBxmotd\fP will intern an atom with the server that combines
-the atom-name and the user's login-id (e.g. \fI"xmotd.elf"\fP ; the
-default atom name is \fI"xmotd"\fP); subsequent invocations of
-\fBxmotd\fP will check if this atom exists and exit if it does.
-
+overrides 
+.B xmotd
+default behavior; the \fI~/.xmotd\fP time-stamp is ignored and the
+message (or messages) is always displayed. Zero-length (empty) files
+are displayed when this option is specified.
 
 .TP 8
-\fB-bitmaplogo\fP \fIbitmap-filename\fP 
+.BI \-atom " atom-name"
+
+register 
+.B xmotd
+with name \fIatom-name\fP. By default, only one 
+.B xmotd
+is allowed to run (per user). You can permit multiple instances of
+.B xmotd
+to run by giving each instance an unique name. 
+.B xmotd
+will intern an atom with the X server, that combines the atom-name and
+the user's login-id (e.g. \fI"xmotd.elf"\fP ; the default atom name
+is \fI"xmotd"\fP); subsequent invocations of 
+.B xmotd
+will check if this atom exists and exit if it does.
+
+
+.TP 8
+.BI \-bitmaplogo " bitmap-filename"
 
 specifies that the bitmap \fIbitmap-filename\fP is to be displayed in
 place of the default bitmap, the "X" logo.  Ideally, the specified
@@ -127,19 +153,19 @@ is compiled-in, xpm colour pixmaps may be substituted instead. See
 NOTES for additional details.
 
 .TP 8
-\fB-help\fP
+.BI \-help
 
 displays command-line options usage.
 
 .TP 8
-\fB-paranoid\fP
+.BI \-paranoid
 
 (used with \fB-warnfile\fP) displays the warning message
 unconditionally at every login (even when there are no messages to be
 displayed).
 
 .TP 8
-\fB-popdown\fP \fItimeout\fP 
+.BI \-popdown " timeout"
 
 exit or pop-down without user intervention, \fItimeout\fP seconds
 after being invoked. The user can dismiss \fBxmotd\fP at any time
@@ -148,25 +174,25 @@ option is only valid at the initial login; it is ignored on
 subsequent pop-ups when \fBxmotd\fP is invoked with \fB-wakeup\fP.
 
 .TP 8
-\fB-showfilename\fP
+.BI \-showfilename
 
 displays the filename of the file currently being viewed (as it
 appears on the command-line), alongside the date.
 
 .TP 8
-\fB-stampfile\fP \fIstamp-filename\fP 
+.BI \-stampfile " stamp-filename"
 
 overrides the default timestamp filename, \fI~/.xmotd\fP, and uses
 \fIstamp-filename\fP instead.
 
 .TP 8
-\fB-tail\fP
+.BI \-tail
 
 display the end of a file; the text is automatically scrolled so the
 end of the file is visible.
 
 .TP 8
-\fB-usedomains\fP
+.BI \-usedomains
 
 uses local domain-name based time-stamping in cases where user's
 home-directories are shared (NFS mounted) across various domains.
@@ -174,7 +200,7 @@ Time-stamps are created (and checked) with appropriate domain-names
 appended.
 
 .TP 8
-\fB-warnfile\fP \fIwarning-filename\fP
+.BI \-warnfile " warning-filename"
 
 specifies a file containing a standard message used to warn users of
 the consequences of deviance and sundry unlawful things they should
@@ -183,7 +209,7 @@ use, information about disk quotas, modem charges and printer
 accounting fees (used with \fB-paranoid\fP).
 
 .TP 8
-\fB-wakeup\fP \fIsleep-period\fP 
+.BI \-wakeup " sleep-period"
 
 causes \fBxmotd\fP to run in the background and wakeup periodically
 every \fIsleep-period\fP hours to check whether the files have been
@@ -197,14 +223,14 @@ where users with personal workstations never log-out. See NOTES for
 additional details.
 
 .TP 8
-\fIfile [file2 ... ]\fP 
+.I file [file2 ... ]
 
 one or more files to be displayed may be specified. The file(s)
 contain the text of the message(s) of the day. If HTML support is
 compiled-in the motd files should be marked-up with HTML.
 
 .TP 8
-\fIdirectory\fP 
+.I directory
 
 Instead of supplying one or more files on the command-line,
 \fBxmotd\fP may be supplied a \fIdirectory\fP containing file(s) to
@@ -419,20 +445,21 @@ sleeping, "S" in the ps(1) status field, after the user has
 logged-out until the sleep timeout expires. Only when \fBxmotd\fP
 wakes-up, will it detect that the user has logged-out and
 exit. \fBxmotd\fP's logout-detection routine relies on the xdm(1)
-support scripts \fBGiveConsole\fP and \fBTakeConsole\fP setting the
-correct permissions and ownership on \fB/dev/console\fP. When
-\fBxmotd\fP wakes-up, it attempts to open(2) \fB/dev/console\fP for
-reading; if this open fails, it is an indication that the user has
-logged out because \fBTakeConsole\fP has changed ownership of the
-console.
+support scripts \fBGiveConsole\fP (which chown's \fB/dev/console\fP
+to the user) and \fBTakeConsole\fP (which chown's \fB/dev/console\fP
+back to root) setting the correct permissions and ownership on
+\fB/dev/console\fP. When \fBxmotd\fP wakes-up, it attempts to open(2)
+\fB/dev/console\fP for reading; if this open fails, it is an
+indication that the user has logged out because \fBTakeConsole\fP has
+changed ownership of the console.
 
 .SH BUGS
 
-At least one.
+There are no provisions for displaying embedded images in the HTML
+version of \fBxmotd\fP (until a stable XmHTML widget is available, or
+perhaps when \fBxmotd\fP is ported to the GTK).
 
-Also, there are no provisions for displaying embedded images in the
-HTML version of \fBxmotd\fP (until a stable XmHTML widget is
-available).
+At least one other.
 
 .SH QUOTES
 .nf
@@ -473,8 +500,9 @@ xpm logos.
 
 .SH COPYRIGHT
 
-Copyright 1993 (as xbanner, no public release) 1994-97, 1999 Luis A.
-Fernandes 
+Copyright 1993 (as xbanner, no public release) 
+
+Copyright 1994-97, 1999,  2001, 2003 Luis A. Fernandes 
 
 Permission to use, copy, hack, and distribute this software and its
 documentation for any purpose and without fee is hereby granted,
@@ -503,3 +531,5 @@ The HTML widget Copyright 1993, Board of Trustees of the
 University of Illinois. See the file libhtmlw/HTML.c for the complete
 text of the NCSA copyright.
 
+NOTE: THE HTML WIDGET IS NOT DISTRIBUTED IN THE "LITE" VERSION OF THE
+xmotd DISTRIBUTION, WHICH IS THEREFORE FULLY COMPLIANT WITH THE GPL.

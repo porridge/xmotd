@@ -1,7 +1,7 @@
-/*$Id: xmotd.c,v 1.18 1997/06/23 17:50:37 elf Exp $*/
+/*$Id: xmotd.c,v 1.20 2003/02/14 00:37:38 elf Exp $*/
 
 /*
- * Copyright 1994-97 Luis Fernandes <elf@ee.ryerson.ca> 
+ * Copyright 1994-97, 2003 Luis Fernandes <elf@ee.ryerson.ca> 
  *
  * Permission to use, copy, hack, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -97,11 +97,17 @@ nextMessage(Widget w, caddr_t call_data, caddr_t client_data)
   XmString xmstr;
 #endif
 
+/*   fprintf(stderr,"nextMessage()\n"); */
+
   if (!msgslist)
     return;
 
   memset(buffer, 0, 256);
   displayMessage(msgslist->file);
+
+  updateTimeStamp(getTimeStampName()); /* update the timestamp
+										  whenever we pop-up to
+										  display a message */
 
   if(app_res.showfilename)		/*show the filename */
 	{
@@ -168,7 +174,7 @@ revisitMessagesAndDisplay(int numsg)
   extern Widget topLevel, quit;
   extern void Quit(Widget w, caddr_t call_data, caddr_t client_data);
   
-/*  fprintf(stderr,"revisitMessagesAndDisplay()\n");*/
+  /*  fprintf(stderr,"revisitMessagesAndDisplay()\n");*/
 
   if(numsg>1)
 	{
@@ -204,6 +210,8 @@ displayMessage(char *filename)
   FILE *fp;
   struct stat motdstat;
   extern Widget text;
+
+/*   fprintf(stderr,"displayMessage()\n"); */
 
 #ifdef MOTIF
   XmString xmstr;
@@ -256,7 +264,7 @@ displayMessage(char *filename)
 #endif
 
 #endif
-  
+
   return(1);
   
 }/* displayMessage*/

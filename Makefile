@@ -2,7 +2,7 @@
 # $XConsortium: imake.c /main/90 1996/11/13 14:43:23 lehors $
 
 # ----------------------------------------------------------------------
-# Makefile generated from "Imake.tmpl" and </tmp/IIf.0bv7kt>
+# Makefile generated from "Imake.tmpl" and <Imakefile>
 # $XConsortium: Imake.tmpl /main/243 1996/11/13 14:42:56 lehors $
 #
 
@@ -457,7 +457,7 @@ LINTXKBFILE = $(LINTLIBDIR)/llib-lxkbfile.ln
 # ----------------------------------------------------------------------
 # start of Imakefile
 
-# BUILD INSTRUCTIONS:
+# BUILD INSTRUCTIONS (ALSO SEE NOTES):
 # -------------------
 # Step 1. xmkmf -a
 # Step 2. make all
@@ -497,7 +497,7 @@ LINTXKBFILE = $(LINTLIBDIR)/llib-lxkbfile.ln
 
              SRCS = main.c xmotd.c changed.c textmode.c usage.c browser.c logo.c atom.c
              OBJS = main.o xmotd.o changed.o textmode.o usage.o browser.o logo.o atom.o
-            INCLS = maindefs.h patchlevel.h appdefs.h main.h
+            INCLS = maindefs.h appdefs.h main.h
 
       CDEBUGFLAGS = -g
         MANSUFFIX = 8
@@ -507,8 +507,8 @@ LINTXKBFILE = $(LINTLIBDIR)/llib-lxkbfile.ln
 					$(SRCS) $(INCLS)
 
 # No space after the equals-sign
-              VER =1.16
-             LITE =1.16
+              VER =1.17.3b
+             LITE =1.17.3b
 
 .PRECIOUS: distrib
 
@@ -562,10 +562,14 @@ distrib: $(MANIFEST)
 lite: $(MANIFEST)
 	./distrib lite
 
+# Generate man-page
 man: xmotd.8
-	rm -f xmotd-man.html xmotd-man.ps;
-#	nroff -man xmotd.8 | man2html >xmotd-man.html;
-	troff -man xmotd.8 | dpost >xmotd-man.ps;
+	rm -f xmotd-man.ps;
+	troff -mansun xmotd.8 |dpost >xmotd-mansun.ps
+
+# This target builds the java distribution, Wed Sep 26 19:24:51 2001
+java-distrib:
+	tar zcvf jmotd-0.55.tar.gz jmotd/README jmotd/logo.gif jmotd/xmotd* jmotd/HistoryItem*
 
 # ----------------------------------------------------------------------
 # common rules for all Makefiles - do not edit
