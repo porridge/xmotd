@@ -1,3 +1,13 @@
+xmotd (1.16-4) unstable; urgency=low
+
+  * Adopting this package, which closes: Bug#116505
+  * Added missing backslashes in manpage, which closes: Bug#111678
+  * Added a xmotd.man: target to Imakefile. This probably isn't the
+    best way to fix the build, but I have more pleasant things to do
+    than trying to parse several-thousand-lines-long imake template
+
+ -- Marcin Owsiany <porridge@debian.org>  Sat,  3 Nov 2001 21:31:42 +0100
+
 xmotd (1.16-3) unstable; urgency=low
 
   * Added missing libxaw-dev to Build-Depends.

@@ -1,7 +1,7 @@
 Source: xmotd
 Section: x11
 Priority: optional
-Maintainer: Debian QA Group <packages@qa.debian.org>
+Maintainer: Marcin Owsiany <porridge@debian.org>
 Standards-Version: 3.5.5
 Build-Depends: debhelper (>= 3), libxaw-dev, xlibs-dev, xutils
 

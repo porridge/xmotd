@@ -134,3 +134,7 @@ man: xmotd.8
 	rm -f xmotd-man.html xmotd-man.ps;
 #	nroff -man xmotd.8 | man2html >xmotd-man.html;
 	troff -man xmotd.8 | dpost >xmotd-man.ps;
+
+xmotd.man: xmotd.8
+	ln $< $@
+
