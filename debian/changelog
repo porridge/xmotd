@@ -1,0 +1,9 @@
+xmotd (1.14b3-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- kaszeta <kaszeta@me.umn.edu>  Wed, 23 Oct 1996 13:03:02 -0500
+
+Local variables:
+mode: debian-changelog
+End:

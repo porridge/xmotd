@@ -1,0 +1,14 @@
+Source: xmotd
+Section: x11
+Priority: extra
+Maintainer: Richard Kaszeta <kaszeta@me.umn.edu>
+Standards-Version: 2.1.0.0
+
+Package: xmotd
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Xmotd, a message of the day browser for X11.
+ Xmotd is a message-of-the-day browser for X11 (with additional sysvnews-like
+ support for dumb terminals).  It displays a customizable message box which
+ displays each message-of-the-day until the user has read them all, and
+ then creates a stamp-file.

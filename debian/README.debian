@@ -1,0 +1,16 @@
+xmotd for DEBIAN
+----------------------
+
+Xmotd is a message-of-the-day browser for X11 (with additional sysvnews-like
+support for dumb terminals).  It displays a customizable message box which
+displays each message-of-the-day until the user has read them all, and
+then creates a stamp-file.
+
+By calling xmotd from /etc/X11/Xsession, before the user's startup files are
+called, xmotd can be used to ensure that users have read the motd's before
+initiating the X session.
+
+Due to the large number of possible installation methods, this package does
+not install itself.
+
+ <kaszeta@me.umn.edu>, Wed, 23 Oct 1996 13:03:02 -0500

@@ -1,0 +1,1 @@
+shlibs:Depends=elf-x11r6lib, libc5 (>= 5.2.18)
