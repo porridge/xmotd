@@ -5,7 +5,7 @@ xmotd \- message-of-the-day browser for X (and dumb terminals,
 VT100, etc.)
 
 .SH SYNOPSIS
-.B /usr/local/bin/xmotd 
+.B /usr/bin/xmotd 
 [\fBX-toolkit options\fP] [\fBxmotd-options\fP] \fIfile\fP
 [\fIfile2\fP ... ]
 
@@ -13,14 +13,14 @@ VT100, etc.)
 or
 .LP
 
-.B /usr/local/bin/xmotd 
+.B /usr/bin/xmotd 
 [\fBX-toolkit options\fP] [\fBxmotd-options\fP] \fIdirectory\fP
 
 .LP
 or (in text-mode)
 .LP
 
-.B /usr/local/bin/xmotd
+.B /usr/bin/xmotd
 [\fB-stampfile\fP \fIstamp-file\fP] [\fB-wakeup\fP \fIsleep-period\fP]
 \fIfile\fP [\fIfile2\fP ...]
 
@@ -60,8 +60,9 @@ it cannot connect to an X display. This mode is useful for running
 also login via dialup.
 
 .LP
-\fBxmotd\fP can display messages marked-up with HTML and xpm colour
-pixmap logos. Support for these must be configured at compile-time.
+This version of \fBxmotd\fP cannot display messages marked-up with HTML
+and xpm colour pixmap logos, because that code did not fit Debian Free Software
+Guidelines.
 
 .SH OPERATION
 .LP
@@ -124,13 +125,6 @@ place of the default bitmap, the "X" logo.  Ideally, the specified
 bitmap should have a width and height of 100 pixels. If xpm support
 is compiled-in, xpm colour pixmaps may be substituted instead. See
 NOTES for additional details.
-
-.TP 8
-\fB-browser\fP \fIweb-browser\fP 
-
-specifies the path and filename of a web-browser to be used when an
-URL is clicked (HTML version only). By default, \fIweb-browser\fP is
-\fI"/usr/local/bin/netscape"\fP. See NOTES for additional details.
 
 .TP 8
 \fB-help\fP
@@ -272,7 +266,7 @@ option. This example (typed as a single line) illustrates how
 
 .nf
 
-    /usr/local/bin/xmotd -always \\
+    /usr/bin/xmotd -always \\
         -xrm "*title.label: Top 10 Disk Hogs\\n As of midnight\\n " \\
         -xrm "*title.foreground: yellow" \\
         -xrm "*form.background: red" \\
@@ -431,26 +425,6 @@ correct permissions and ownership on \fB/dev/console\fP. When
 reading; if this open fails, it is an indication that the user has
 logged out because \fBTakeConsole\fP has changed ownership of the
 console.
-
-The \fB-browser\fP option was originally called \fB-netscape\fP; it
-was renamed to be more generic. When initially run, the browser is
-invoked as:
-
-.nf
-    /usr/local/bin/netscape %s
-
-.fi
-
-where \fB%s\fP is replaced by the selected URL. Subsequent URLs will
-be displayed in the already running browser using the syntax:
-
-.nf
-    /usr/local/bin/netscape -remote openURL(%s)
-
-.fi
-
-You may substitute a browser of your choice for \fBnetscape\fP, if it
-supports this syntax.
 
 .SH BUGS
 

@@ -14,3 +14,10 @@ Due to the large number of possible installation methods, this package does
 not install itself.
 
  -- Richard Kaszeta <kaszeta@me.umn.edu>, Wed, 23 Oct 1996 13:03:02 -0500
+
+
+This Debian package actually includes the "xmotd-lite" version of the program.
+It only means it does not include the HTML rendering widget library, which does
+not fit Debian Free Software Guidelines.
+
+ -- Marcin Owsiany <porridge@debian.org>, Sat, 13 Apr 2002 20:29:32 +0200

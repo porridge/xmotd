@@ -1,3 +1,15 @@
+xmotd (1.16.0.1-1) unstable; urgency=high
+
+  * Fixed paths in manpage, thanks to Guido Guenther, closes: Bug#142356
+  * Removed the HTML widget library, which is non-free. It was a serious
+    policy violation (2.1.2), thus urgency=high.
+    The library was disabled in 1.16-1 anyway.
+  * Since libhtmlw is no longer included, and without it xmotd doesn't use any
+    browser, bug 142407 no longer makes sense, thus closes: Bug#142407
+  * Noted in manpage and README.Debian that HTML widget is no longer included.
+
+ -- Marcin Owsiany <porridge@debian.org>  Sat, 13 Apr 2002 20:38:48 +0200
+
 xmotd (1.16-4) unstable; urgency=low
 
   * Adopting this package, which closes: Bug#116505
