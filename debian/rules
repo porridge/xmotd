@@ -37,11 +37,21 @@ binary-indep:	checkroot build
 binary-arch:	checkroot build
 	$(checkdir)
 	-rm -rf debian/tmp
-	install -d debian/tmp/usr/sbin debian/tmp/etc
+	install -d debian/tmp/usr/sbin debian/tmp/etc debian/tmp/usr/man/man8
+	install -d debian/tmp/usr/doc/xmotd debian/tmp/DEBIAN
 	make install DESTDIR=debian/tmp
-# Must have debmake installed for this to work. Otherwise please copy
-# /usr/bin/debstd into the debian directory and change debstd to debian/debstd
-	debstd $(package) CHANGES INSTALL README* TODO
+	cp debian/control debian/tmp/DEBIAN/control
+	cp xmotd.8 debian/tmp/usr/man/man8
+	chmod 644 debian/tmp/usr/man/man8/xmotd.8
+	gzip -9v debian/tmp/usr/man/man8/xmotd.8
+	chmod 644 debian/tmp/usr/X11R6/lib/X11/app-defaults/XMotd
+	cp debian/changelog debian/tmp/usr/doc/xmotd/changelog.Debian
+	cp README debian/tmp/usr/doc/xmotd
+	cp debian/README.debian debian/tmp/usr/doc/xmotd
+	cp ChangeLog debian/tmp/usr/doc/xmotd
+	gzip -9v debian/tmp/usr/doc/xmotd/*
+	cp debian/copyright debian/tmp/usr/doc/xmotd/copyright
+	dpkg-shlibdeps debian/tmp/usr/X11R6/bin/xmotd
 	dpkg-gencontrol
 	chown -R root.root debian/tmp
 	chmod -R g-ws debian/tmp

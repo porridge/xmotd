@@ -1,3 +1,16 @@
+xmotd (1.14b3-1.2) unstable; urgency=low
+
+  * Correct placement of documentation
+
+ -- Martin Mitchell <martin@debian.org>  Wed, 22 Oct 1997 13:01:19 +1000
+
+xmotd (1.14b3-1.1) unstable; urgency=low
+
+  * Non-maintainer release.
+  * Libc6 compile.
+
+ -- Martin Mitchell <martin@debian.org>  Wed, 22 Oct 1997 13:00:36 +1000
+
 xmotd (1.14b3-1) unstable; urgency=low
 
   * Initial Release.
