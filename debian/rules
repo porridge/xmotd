@@ -2,8 +2,6 @@
 # xmotd package rules file
 
 #export DH_VERBOSE=1
-export DH_COMPAT=3
-
 
 #########################################################################
 #
@@ -45,6 +43,8 @@ install: build
 	dh_clean -k
 	ln -sf XMotd XMotd.ad
 	$(MAKE) install DESTDIR=debian/xmotd BINDIR=/usr/bin
+	install -d debian/xmotd/usr/share/applications
+	install -m 0644 debian/xmotd.desktop debian/xmotd/usr/share/applications
 	rm -f XMotd.ad
 
 binary-indep:
@@ -61,6 +61,7 @@ binary-arch: build install
 	dh_compress
 	dh_fixperms
 	dh_installdeb
+	dh_desktop
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums

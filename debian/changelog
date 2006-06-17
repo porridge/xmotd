@@ -1,3 +1,16 @@
+xmotd (1.17.3b-3) unstable; urgency=low
+
+  * Added a .desktop file, which closes: Bug#368090
+  * Quoted "X11" in menu file, added a longtitle to it
+  * Switched to dh compat level 5 (from deprecated 3)
+  * Added misc:Depends
+  * Added a Homepage: line to description
+  * Bumped Standards-Version to 3.7.2 (no changes needed)
+  * Updated FSF address in debian/copyright
+  * Changed dependancy on xutils to xutils-dev, since the latter has imake now
+
+ -- Marcin Owsiany <porridge@debian.org>  Sat, 17 Jun 2006 13:17:30 +0100
+
 xmotd (1.17.3b-2) unstable; urgency=low
 
   * Replaced build-dependancy on xlibs-dev with libxmu-dev, libxpm-dev,
@@ -96,6 +109,3 @@ xmotd (1.14b3-1) unstable; urgency=low
 
  -- kaszeta <kaszeta@me.umn.edu>  Wed, 23 Oct 1996 13:03:02 -0500
 
-Local variables:
-mode: debian-changelog
-End:
