@@ -1,3 +1,16 @@
+xmotd (1.17.3b-4) unstable; urgency=low
+
+  * Install a resized xmotd.xpm in /usr/share/pixmaps and use it in the menu
+    and desktop file
+  * Removed libxaw-dev from alternative in build-deps as it does not exist any
+    more (left just libxaw7-dev)
+  * Tweaked the linking rule in Imakefile to get rid of dependancies we don't
+    really need, as detected by checklib.
+  * Turned on xpm support in Imakefile
+  * Added a uscan watch file, which closes: Bug#377336
+
+ -- Marcin Owsiany <porridge@debian.org>  Tue,  3 Jul 2007 18:47:45 +0100
+
 xmotd (1.17.3b-3) unstable; urgency=low
 
   * Added a .desktop file, which closes: Bug#368090

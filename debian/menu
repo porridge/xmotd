@@ -1,2 +1,6 @@
-?package(xmotd): needs="X11" section="Apps/Viewers" title="Xmotd" \
- command="xmotd /etc/motd" longtitle="Message of the day viewer for X"
+?package(xmotd): needs="x11" \
+ section="Apps/Viewers" \
+ title="Xmotd" \
+ command="xmotd /etc/motd" \
+ icon="xmotd.xpm" \
+ longtitle="Message of the day viewer for X"

@@ -3,7 +3,7 @@ Section: x11
 Priority: optional
 Maintainer: Marcin Owsiany <porridge@debian.org>
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 5), libxaw7-dev | libxaw-dev, libxmu-dev, libxpm-dev, libxt-dev, xutils-dev
+Build-Depends: debhelper (>= 5), libxaw7-dev, libxmu-dev, libxpm-dev, libxt-dev, xutils-dev
 
 Package: xmotd
 Architecture: any

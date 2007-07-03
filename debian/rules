@@ -44,7 +44,9 @@ install: build
 	ln -sf XMotd XMotd.ad
 	$(MAKE) install DESTDIR=debian/xmotd BINDIR=/usr/bin
 	install -d debian/xmotd/usr/share/applications
+	install -d debian/xmotd/usr/share/pixmaps
 	install -m 0644 debian/xmotd.desktop debian/xmotd/usr/share/applications
+	install -m 0644 debian/xmotd.xpm     debian/xmotd/usr/share/pixmaps
 	rm -f XMotd.ad
 
 binary-indep:

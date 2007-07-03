@@ -22,7 +22,7 @@ XCOMM #define HAVE_HTML
 
 XCOMM If you wish to use colour xpm pixmaps for the icon and have the
 XCOMM Xpm library installed, then uncomment the following line: 
-XCOMM #define HAVE_XPM
+#define HAVE_XPM
 
 XCOMM If you wish to build with Motif, then uncomment the following line:
 XCOMM #define MOTIF
@@ -111,7 +111,7 @@ XCOMM No space after the equals-sign
 XCOMM This is what the final link looks like:
 XCOMM LOCAL_LIBRARIES = -lXm -lXmu -lXt -lXext -lX11 -lsocket -lgen -lucb  -L/usr/ucblib -R/usr/ucblib -R/usr/X11R6/lib
 
-  LOCAL_LIBRARIES = $(MOTD_LIBRARIES) XawClientLibs
+  LOCAL_LIBRARIES = $(MOTD_LIBRARIES) $(XAWLIB) $(XMULIBONLY) $(XTOOLONLYLIB) $(XONLYLIB)
           DEPLIBS = $(HTML_DEP_LIB) 
 
 ComplexProgramTarget(xmotd)
