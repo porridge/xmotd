@@ -1,10 +1,22 @@
+xmotd (1.17.3b-5) unstable; urgency=high
+
+  * Patched to include necessary headers, which fixes segfault on x86_64,
+    which in turn closes: Bug#458703
+  * Fixed some spelling errors in changelog
+  * Moved homepage URL from Description: to the new Homepage: field
+  * Updated the menu entry to conform to the new menu policy
+  * Bumped standards-version to 3.7.3
+  * Updated years in debian/copyright
+
+ -- Marcin Owsiany <porridge@debian.org>  Sun, 20 Jan 2008 21:09:01 +0000
+
 xmotd (1.17.3b-4) unstable; urgency=low
 
   * Install a resized xmotd.xpm in /usr/share/pixmaps and use it in the menu
     and desktop file
   * Removed libxaw-dev from alternative in build-deps as it does not exist any
     more (left just libxaw7-dev)
-  * Tweaked the linking rule in Imakefile to get rid of dependancies we don't
+  * Tweaked the linking rule in Imakefile to get rid of dependencies we don't
     really need, as detected by checklib.
   * Turned on xpm support in Imakefile
   * Added a uscan watch file, which closes: Bug#377336
@@ -20,13 +32,13 @@ xmotd (1.17.3b-3) unstable; urgency=low
   * Added a Homepage: line to description
   * Bumped Standards-Version to 3.7.2 (no changes needed)
   * Updated FSF address in debian/copyright
-  * Changed dependancy on xutils to xutils-dev, since the latter has imake now
+  * Changed dependency on xutils to xutils-dev, since the latter has imake now
 
  -- Marcin Owsiany <porridge@debian.org>  Sat, 17 Jun 2006 13:17:30 +0100
 
 xmotd (1.17.3b-2) unstable; urgency=low
 
-  * Replaced build-dependancy on xlibs-dev with libxmu-dev, libxpm-dev,
+  * Replaced build-dependency on xlibs-dev with libxmu-dev, libxpm-dev,
     libxt-dev, as suggested by xlibs-split script, closes: Bug#346766
 
  -- Marcin Owsiany <porridge@debian.org>  Sat, 14 Jan 2006 14:34:11 +0100

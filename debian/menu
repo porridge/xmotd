@@ -1,5 +1,5 @@
 ?package(xmotd): needs="x11" \
- section="Apps/Viewers" \
+ section="Applications/Viewers" \
  title="Xmotd" \
  command="xmotd /etc/motd" \
  icon="xmotd.xpm" \
