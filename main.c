@@ -12,10 +12,10 @@
  * man-page or http://www.ee.ryerson.ca:8080/~elf/xmotd.html
  * */
 
-/* $Id: main.c,v 1.9 1996/10/08 17:29:14 elf Exp $ */
+/* $Id: main.c,v 1.17 1999/11/23 22:55:14 elf Exp $ */
 
 /*
- * Copyright 1993, 1994, 1995, 1996  Luis Fernandes <elf@ee.ryerson.ca> 
+ * Copyright 1993-97, 1999  Luis Fernandes <elf@ee.ryerson.ca> 
  *
  * Permission to use, copy, hack, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -23,7 +23,21 @@
  * that both that copyright notice and this permission notice appear
  * in supporting documentation.  This application is presented as is
  * without any implied or written warranty.
- *
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * 
  * libhtmlw is copyright (C) 1993, Board of Trustees of the University
  * of Illinois. See the file libhtmlw/HTML.c for the complete text of
  * the NCSA copyright.
@@ -53,6 +67,11 @@
 
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
+#include <X11/Xmu/Editres.h>
+
+#ifdef HAVE_XPM
+#include <X11/xpm.h>
+#endif
 
 #ifdef MOTIF
 
@@ -76,22 +95,25 @@
 #include <HTML.h>
 #endif
 
+#define MIN_SLEEP_PERIOD 60		/* in seconds */
+#define HOURS_TO_SECS 3600.0
+
 #include "maindefs.h"
 #include "appdefs.h"
 #include "main.h"
 
-/* default bitmap that goes in the corner*/
-#include "xlogo.bm"
-
 extern time_t motdChanged();
 extern void nextMessage(Widget w, caddr_t call_data, caddr_t client_data);
+extern void AnchorCallbackProc(Widget w, caddr_t call_data, caddr_t client_data); /* browser.c */
+
+extern void loadLogo(char *logo, Pixmap *icon_pixmap, Pixel fg, Pixel bg); /* in logo.c */
 
 /* fwd decls*/
 XtActionProc reallyQuit(Widget w, XButtonEvent *ev);
 void Quit(Widget w, caddr_t call_data, caddr_t client_data);
-void printUsage(char *str);
-int numfilesToDisplay(int argc, char **argv);
-int runSilentRunDeep(int argc, char **argv, float period);
+void printUsage(char *str);		/* usage.c */
+int runSilentRunDeep(unsigned slumber);
+unsigned getAlarmTime(float period);
 messageptr freeMessage(messageptr msglist);
 messageptr newMessage(char *file);
 
@@ -123,6 +145,7 @@ static int alreadyForked;		/* flag to remember if we are already
 static XtResource resources[] = {
   { "always","Always",XtRInt, sizeof(int),
 	  offset(always),XtRString, "0"},
+
   { "popdown","Popdown",XtRInt, sizeof(int),
 	  offset(pto),XtRString, "0"},
   { "usedomains","UseDomains",XtRInt, sizeof(int),
@@ -131,6 +154,8 @@ static XtResource resources[] = {
 	  offset(showfilename),XtRString, "0"},
   { "paranoid","Paranoid",XtRInt, sizeof(int),
 	  offset(paranoid),XtRString, "0"},
+  { "tail","Tail",XtRInt, sizeof(int),
+	offset(tail),XtRString, "0"},
   { "bitmaplogo","BitmapLogo",XtRString, sizeof(String),
 	  offset(logo),XtRString, NULL},
   { "warnfile","Warnfile",XtRString, sizeof(String),
@@ -139,6 +164,12 @@ static XtResource resources[] = {
 	  offset(periodic),XtRString, "0"},
   { "stampfile","Stampfile",XtRString, sizeof(String),
 	  offset(stampfile),XtRString, TIMESTAMP},
+  { "atom","Atom",XtRString, sizeof(String),
+	  offset(atomname),XtRString, ATOM},
+#ifdef HAVE_HTML
+  { "browser","Browser",XtRString, sizeof(String),
+	  offset(browser),XtRString, BROWSER},
+#endif
 };
 
 static XrmOptionDescRec options[] = {
@@ -146,14 +177,19 @@ static XrmOptionDescRec options[] = {
   { "-showfilename", "showfilename", XrmoptionNoArg,  "1"},
   { "-usedomains",   "usedomains",   XrmoptionNoArg,  "1"},
   { "-paranoid",     "paranoid",     XrmoptionNoArg,  "1"},
+  { "-tail",         "tail",         XrmoptionNoArg,  "1"},
   { "-popdown",      "popdown",      XrmoptionSepArg, (caddr_t) NULL},
   { "-bitmaplogo",   "bitmaplogo",   XrmoptionSepArg, (caddr_t) NULL},
   { "-warnfile",     "warnfile",     XrmoptionSepArg, (caddr_t) NULL},
   { "-wakeup",       "wakeup",       XrmoptionSepArg, (caddr_t) NULL},
   { "-stampfile",    "stampfile",    XrmoptionSepArg, (caddr_t) NULL},
-
+  { "-atom",         "atom",         XrmoptionSepArg, (caddr_t) NULL},
+#ifdef HAVE_HTML
+  { "-browser",      "browser",      XrmoptionSepArg, (caddr_t) NULL},
+#endif
 };
 
+/* You can use shift + btn1 to quit xmotd (when run with -wakeup)*/
 static char shift1Trans[]="#override\n\
         Shift<Btn1Down>,Shift<Btn1Up>: reallyquit()";
 
@@ -161,6 +197,10 @@ static XtActionsRec xlations[]={
         {"reallyquit", (XtActionProc) reallyQuit},
 };
 
+/* when the text widget is mapped and we are in "tail" mode, scroll to
+   the end of the file*/
+static char tailTrans[]="#override\n\
+        <Expose>: end-of-file()";
 
 char *
 getTimeStampName()
@@ -181,6 +221,19 @@ getTimeStampName()
 
   return(buf);
   
+}
+
+/* convert user-specified wakeup time to seconds (argument to sleep)*/
+unsigned 
+getAlarmTime(float period)
+{
+  unsigned slumber=(period*HOURS_TO_SECS); 
+
+  /*  fprintf(stderr,"slumber=%ld\n", slumber);*/
+
+  /* limit sleep to 60sec*/
+  return((slumber<MIN_SLEEP_PERIOD)?MIN_SLEEP_PERIOD:slumber);
+
 }
 
 /* NOTE: Jul 17 1996: This code doesn't work accurately for some
@@ -258,27 +311,25 @@ Quit(Widget w, caddr_t call_data, caddr_t client_data)
   
   if(!app_res.periodic)
 	{
+	  /* we can exit because -wakeup is not specified*/
 	  reallyQuit((Widget)NULL, (XButtonEvent *)NULL );
 	}
   else  
 	{
-	  extern void revisitMessagesAndDisplay();
-	  
+	  extern void revisitMessagesAndDisplay(int);
+
 	  XUnmapWindow(XtDisplay(topLevel), XtWindow(topLevel));
 	  XFlush(XtDisplay(topLevel));
 
 	  if(!alreadyForked)
 		{
-/*		  fprintf(stderr,"daemonizing...\n");*/
 		  if(fork()) exit(0);
-
+		  
 		  alreadyForked=1;
 		}
-
-	  runSilentRunDeep(gargc, gargv, app_res.periodic);
 	  
-	  revisitMessagesAndDisplay();
-		
+	  revisitMessagesAndDisplay(runSilentRunDeep(getAlarmTime(app_res.periodic)));
+	  
 	}
 
 }
@@ -400,39 +451,38 @@ numFilesToDisplay(int argc, char **argv)
   
   return numsg;
   
-}
+}/* numFilesToDisplay*/
 
-/* I've watched waay too many WWII sub-movies, wouldn't you say? */
 int
-runSilentRunDeep(int argc, char **argv, float period)
+runSilentRunDeep(unsigned slumber)
 {
-  unsigned slumber=(float)(period*3600.0); /* hrs->secs */
-
-  if(slumber<60) slumber=60;	/* minimum 60 seconds */
-
+  int numsg=0;
+  
   while(1)
 	{
-	  int numsg, fd;
+	  int fd;
 	  
+	  /*	  fprintf(stderr, "Going to sleep! (Zzzzzzzz...)\n");*/
 	  sleep(slumber);
+	  /*	  fprintf(stderr, "Waking-up! (Yawn...)\n");*/
 
-	  /* Check if user is still logged-in by trying to open
-         "/dev/tty". If we can't open the controlling terminal then
-         the user has logged-out (W. Richard Stevens _Advanced Unix
-         Programming_) and xmotd can exit. */
-	  
-	  if((fd=open("/dev/tty", O_RDONLY, O_RDONLY)<0))
+	  /* first thing we do after waking up is to see if the user is
+         still logged-in*/
+	  if((fd=open("/dev/console", O_RDONLY, O_RDONLY)<0))
 		{
+		  /* since xmotd can't read from the console we assume user
+             has logged-out, so we exit*/
 		  exit(0);
 		}
+
 	  close(fd);
 	  
-	  numsg=numFilesToDisplay(argc, argv);
+	  /* next check if any messages need to be displayed, if there
+         aren't any, go back to sleep; otherwise return to display
+         messages*/
+	  if(numsg=numFilesToDisplay(gargc, gargv)) return(numsg);
+	}
 
-	  if(numsg) return numsg;	/* we have files to display so we can return */
-			  
-	}  
-		
 }
 
 
@@ -440,9 +490,11 @@ main(argc, argv)
 int argc;
 char **argv;
 {
+  extern Boolean atomExists(String);
   Display *display;
   register int i, start=0;
   int numsg;
+
   
   if ((argc > 1) && !(strcmp(argv[1],"-help")))
 	{
@@ -460,18 +512,17 @@ char **argv;
 
 	  if(argc<2)
 		{
-		  fprintf(stderr, "FATAL: Missing File.\n");
+		  fprintf(stderr, "xmotd: ERROR, missing file.\n");
 		  printUsage(argv[0]);	/* and exit */
 		}
 	  else
 		{
 		  extern void runInTextMode();
 		  runInTextMode(argc, argv); /* ...and exit... */
-
-		  fprintf(stderr,"Never gets here!\n");
-		  exit(0);				/* just in case */
-		  
 		} 
+
+	  fprintf(stderr,"Never gets here!\n");
+	  exit(0);				/* just in case */
 	  
 	} 
   else 
@@ -479,28 +530,28 @@ char **argv;
 	  XCloseDisplay(display);
 	}
   
-  /* we have to init the toolkit *before* we check the command-line
-     since -geom options, etc. may be specified, in which case, the
-     motd-filename is *not* the 2nd argument*/
+  /* we have to init the toolkit *before* we check the command-line so
+     we can use X's parsing routines, since -geom options, etc. may be
+     specified, in which case, the motd-filename is *not* the 2nd
+     argument*/
   topLevel = XtVaAppInitialize(&app_con, "XMotd", options, 
 							   XtNumber(options),
 							   &argc, argv, fallback_resources, 
 							   NULL);
-  
+
   XtGetApplicationResources(topLevel, (caddr_t) &app_res,
 							resources, XtNumber(resources),
 							(ArgList) NULL, (Cardinal) 0);
 
   if(argc<2)
 	{
-	  fprintf(stderr,"FATAL: missing filename\n");
+	  fprintf(stderr,"xmotd: ERROR, missing file\n");
 	  printUsage(argv[0]);	/* and exit */
 	}
   
-
   if(app_res.paranoid && !app_res.warnfile)
 	{
-	  fprintf(stderr,"FATAL: specified \"-paranoid\" without \"-warnfile\"\n");
+	  fprintf(stderr,"xmotd: ERROR, specified \"-paranoid\" without \"-warnfile\"\n");
 	  printUsage(argv[0]);	/* and exit */
 	}
 
@@ -514,39 +565,43 @@ char **argv;
      the new ones (unless -always has been specified, in which case we
      show all of them)*/
   numsg=numFilesToDisplay(argc, argv);
- 
-  /* if none of the messages need to be displayed we can exit ONLY if
-     we are NOT told to periodically check the motds*/
-  if(!numsg)
+
+  if(!app_res.periodic && !numsg)
+	{
+	  /* if none of the messages need to be displayed and -wakeup not
+	  specified */
+
+	  XtDestroyApplicationContext(app_con);		
+	  exit(0);
+	}  
+
+  if(app_res.periodic)			/*-wakeup or -timeout specified*/
 	{
 
-	  if(!app_res.periodic)
-		{
-		  XtDestroyApplicationContext(app_con);		
-		  exit(0);
-		}
-	  else
-		{
+	  /*ensure no other copies of xmotd are running*/
+	  if(atomExists(app_res.atomname)){
+		XtDestroyApplicationContext(app_con);		
+		exit(0);
+	  }
 
-		  /* fork and go to sleep; when we wake-up, check the files
-			 to see if they've been modified*/
-		  if(fork()) exit(0);
-		  alreadyForked=1;
-		  
-		  numsg=runSilentRunDeep(argc, argv, app_res.periodic);	
-		  
+	  if(fork()) exit(0);		/*we have to daemonize ourselves*/
+	  alreadyForked=1;			/* make a note of it */
+
+	  if(!numsg)
+		{
+		  /* if no messages to be displayed, we sleep */
+		  numsg=runSilentRunDeep(getAlarmTime(app_res.periodic));
 		}
-	  
-	}  
-  
+
+	}
+
   createWidgets(numsg);
-  
-  /* find the first message that is to be displayed, and display it*/
-  nextMessage((Widget)NULL, (caddr_t)NULL, (caddr_t)NULL);
+  nextMessage((Widget)NULL, (caddr_t)NULL, (caddr_t)NULL);  
 
+  XtAddEventHandler(topLevel, (EventMask)0, True,
+					(XtEventHandler)_XEditResCheckMessages, 0);
 
-  XtRealizeWidget(topLevel);
-
+  XtRealizeWidget(topLevel);  
   XtAppMainLoop(app_con);
 }
 
@@ -554,75 +609,29 @@ char **argv;
 createWidgets(int anymsg)
 {
   Widget form, paned, logo, mlabel, hline;
-  XtTranslations shift1TransTable;
-
+  XtTranslations shift1TransTable, tailTransTable;
+  Pixel fg, bg;
   Arg args[8];
   int n;
   
 #ifdef MOTIF
   XmString xmstr;
-  Pixel fg, bg;
 
   form=XtVaCreateManagedWidget("form", xmFormWidgetClass,topLevel, 
 							   NULL);
-
-  XtVaGetValues(form, 
-				XtNbackground, &bg,
-				XtNforeground, &fg, 
-				NULL);
 #else
 
   form=XtVaCreateManagedWidget("form", formWidgetClass,topLevel, 
 							   XtNresizable, True,
 							   NULL);
-#endif
+#endif /* ifdef MOTIF */
 
-  if(app_res.logo)
-	{
-#ifdef MOTIF
+  XtVaGetValues(form, 
+				XtNbackground, &bg,
+				XtNforeground, &fg, 
+				NULL);
 
-	  icon_pixmap=XmGetPixmap(XtScreen(topLevel), 
-							  app_res.logo, 
-							  fg, bg);
-#else
-	  unsigned int width, height;
-	  
-	  /* read-in user-specified bitmap*/
-	  int rv=XReadBitmapFile(XtDisplay(topLevel),
-							 RootWindowOfScreen(XtScreen(topLevel)),
-							 app_res.logo, &width, &height, &icon_pixmap, 
-							 (int *)NULL, (int*)NULL); 
-
-	  /* I could check each return value separately for each of the
-         possible error-conditions, but I'm too lazy.*/
-	  if(rv!=BitmapSuccess)
-		{
-		  fprintf(stderr,BAD_BITMAP_MESSAGE, app_res.logo);
-		  exit(-1);
-		}		  
-#endif
-
-	}
-  else
-	{
-#ifdef MOTIF
-
-	  /* display default X bitmap compiled-in*/
-	  icon_pixmap=
-		XCreatePixmapFromBitmapData(XtDisplay(topLevel), 
-									RootWindowOfScreen(XtScreen(topLevel)), 
-									xlogo_bits,xlogo_width,xlogo_height,
-									fg, bg,
-									DefaultDepthOfScreen(XtScreen(topLevel)));
-#else
-	  /* display default X bitmap compiled-in*/
-	  icon_pixmap=
-		XCreateBitmapFromData(XtDisplay(topLevel),
-							  RootWindowOfScreen(XtScreen(topLevel)), 
-							  xlogo_bits,xlogo_width,xlogo_height);
-#endif
-
-	}
+  loadLogo(app_res.logo, &icon_pixmap, fg, bg);
   
 #ifdef MOTIF
   logo=XtVaCreateManagedWidget("logo", xmLabelWidgetClass, form, 
@@ -648,7 +657,13 @@ createWidgets(int anymsg)
 								 XmNtopAttachment, XmATTACH_WIDGET,
 								 XmNtopWidget, logo,
 								 XmNlabelType, XmSTRING,
-								  NULL);
+
+								 XmNtraversalOn, False, /* remove
+								 Dismiss button from the Tab group;
+								 comment this line out if YOU WANT
+								 "Space-bar" to activate the dismiss
+								 button*/
+								 NULL);
 
   info=XtVaCreateManagedWidget("info", xmLabelWidgetClass, form, 
 							   XmNleftAttachment, XmATTACH_FORM,
@@ -689,7 +704,7 @@ createWidgets(int anymsg)
 				NULL);
   
   XtManageChild(text);
-#endif
+#endif /* ifdef HAVE_HTML & ifdef MOTIF */
 
 #else
 
@@ -735,9 +750,15 @@ createWidgets(int anymsg)
 								 XtNfromVert, info,
 								 NULL);
 
-#endif
-	
-#endif
+#endif /* ifdef HAVE_HTML */
+
+  if(app_res.tail)
+	{
+	  tailTransTable=XtParseTranslationTable(tailTrans);
+	  XtOverrideTranslations(text, tailTransTable);
+	}
+  
+#endif /* ifdef MOTIF */
 	
   if((anymsg>1))
 	{
@@ -771,6 +792,11 @@ createWidgets(int anymsg)
 	    timer=XtAppAddTimeOut(app_con, (unsigned long)(app_res.pto*1000),
 			(XtTimerCallbackProc)Quit, (caddr_t) NULL);
 	}
+
+#ifdef HAVE_HTML
+	  XtAddCallback(text, WbNanchorCallback, 
+					(XtCallbackProc)AnchorCallbackProc,(caddr_t)0);
+#endif
   
   XtAppAddActions(app_con, xlations, XtNumber(xlations));
   shift1TransTable=XtParseTranslationTable(shift1Trans);

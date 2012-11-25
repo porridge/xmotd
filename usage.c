@@ -1,6 +1,6 @@
-/* $Id: usage.c,v 1.2 1996/08/14 16:42:33 elf Exp $ */
+/* $Id: usage.c,v 1.6 1999/11/23 22:59:46 elf Exp $ */
 /*
- * Copyright 1993, 1994, 1995, 1996 Luis Fernandes <elf@ee.ryerson.ca> 
+ * Copyright 1994-97, 1999 Luis Fernandes <elf@ee.ryerson.ca> 
  *
  * Permission to use, copy, hack, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -9,6 +9,21 @@
  * in supporting documentation.  This application is presented as is
  * without any implied or written warranty.
  *
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * 
  */
 
 #include <stdio.h>
@@ -20,22 +35,34 @@ printUsage(str)
 char *str;
 {
 
-  fprintf(stderr, USAGESTRING, str); /* missing motd filename */
-  fprintf(stderr, "\nOptions are:\n");
+  fprintf(stderr, USAGESTRING, str);
+  fprintf(stderr, "\nValid options are:\n");
 
   fprintf(stderr, "   -help             display this message\n");
   fprintf(stderr, "   -always           ignore time-stamp and always display motd(s)\n");
 
-  fprintf(stderr, "   -bitmaplogo file  show the bitmap in \"file\" instead of X logo\n");
+  fprintf(stderr, "   -bitmaplogo file  show the bitmap");
+#ifdef HAVE_XPM
+  fprintf(stderr, "/pixmap");
+#endif
+  fprintf(stderr," in \"file\" instead of X logo\n");
+
+#ifdef HAVE_HTML
+  fprintf(stderr, "   -browser program  invoke \"program\" when URL is clicked\n");
+#endif
+
   fprintf(stderr, "   -paranoid         (used with -warnfile) always show the warning message\n");
+
+
   fprintf(stderr, "   -popdown #        automatically pop-down xmotd after waiting # seconds\n");
   fprintf(stderr, "   -stampfile file   use \"file\" as timestamp, instead of \"%s\"\n", TIMESTAMP);
-  fprintf(stderr, "   -showfilename     show filename, currently being viewed, alongside date\n");
+  fprintf(stderr, "   -showfilename     show name of the file currently being viewed\n");
   
   fprintf(stderr, "   -usedomains       append domain-names to timestamp\n");
   fprintf(stderr, "   -wakeup #.#       every # hours, check motd(s) for changes\n");
   fprintf(stderr, "   -warnfile file    show the warning message in \"file\" before motd(s)\n");
-
+  fprintf(stderr, "   -atom name        register xmotd with \"name\"\n");
+  fprintf(stderr, "   -tail             scroll & display end of file\n");
 
   fprintf(stderr, "\n");
   exit(1);

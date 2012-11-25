@@ -1,4 +1,4 @@
-/* Copyright 1993-97  Luis Fernandes <elf@ee.ryerson.ca> 
+/* Copyright 1996-97 Stuart A. HarveyStuart A. Harvey <sharvey@primenet.com> 
  *
  * Permission to use, copy, hack, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -24,45 +24,52 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  * 
  */
-/* changed.c: utility function for checking the times of 2 files
- * $Id: changed.c,v 1.4 1997/06/02 11:28:58 elf Exp $ 
+/* browser.c: 
+ *	callback procedure to launch a browser (tm) when a hypertext
+ *	anchor is activated.
+ * $Id: browser.c,v 1.3 1997/08/28 20:09:27 elf Exp $
  */
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <X11/Intrinsic.h>
 
+#ifdef HAVE_HTML
+
+#include <stdio.h>
+#include "maindefs.h"
+#include "libhtmlw/HTML.h"
 #include "main.h"
 
 extern app_res_t app_res;
 
-/* motdChanged() returns time_t of the motd file: if modification time
- * of motd is greater than the modification time of time-stamp file;
- * else it returns 0.
- * */
+void __ExecWebBrowser ( char* href );
 
-time_t 
-motdChanged(char *motd, char *stamp)
+XtCallbackProc 
+AnchorCallbackProc( Widget w, caddr_t call_data, caddr_t client_data)
 {
-  struct stat motdstat, tsstat;
+  WbAnchorCallbackData	*anchor_data = ( WbAnchorCallbackData *) client_data;
+  __ExecWebBrowser ( anchor_data->href );
 
-  stat(motd, &motdstat);
-
-  if(stat(stamp, &tsstat))
-    {
-     extern int errno;
-
-      if(errno==ENOENT)			/* file does not exist if 1st time */
-		return(motdstat.st_mtime);
-    }
-
-  if(motdstat.st_mtime <= tsstat.st_mtime) /*Butch Deal*/
-    return((time_t) 0);
-
-  if(!motdstat.st_size && !app_res.always)
-    return((time_t) 0);
-
-  return(motdstat.st_mtime);
 }
 
+void
+__ExecWebBrowser ( char* href )
+{
+   static int browser_pid=0;
+   char   *default_browser=BROWSER;
+   char   *local_browser=BROWSER;
+
+   if ( ! app_res.browser ) { 
+     local_browser=default_browser;
+   } else {
+     local_browser=app_res.browser;
+   }
+
+   browser_pid = fork();
+
+   if ( browser_pid == 0 ) { /* child process */
+     execlp(local_browser,local_browser,href,NULL);
+     fprintf(stderr,"xmotd: Couldn't exec %s\n", local_browser);
+   } else {
+     int status;
+     (void) wait(&status);
+   }
+}
+#endif

@@ -1,8 +1,7 @@
-!XMotd: app-defaults for xmotd 1.13
+!XMotd: app-defaults for xmotd 1.15
 
 !TITLE
 !use a backslash to quote leading spaces in the title
-
 *title.label: \       This is the\nMessage of the Day\n\n
 
 !BITMAP
@@ -10,7 +9,6 @@
 !resource and correct the path- and file-name to point to the location
 !of your X-bitmap file. N.B.: the bitmap can also be specified with the 
 !"-bitmaplogo" command-line option.
-
 !*BitmapLogo: /usr/local/site.bm
 
 !overall-colour
@@ -56,5 +54,7 @@
 !Quit Button
 *quit.font: -*-times-bold-r-*-*-*-240-*
 *quit.label: Dismiss
-*quit*foreground: lightcyan
+*quit*foreground: dodgerblue4
 *quit*background: lightsteelblue3
+
+

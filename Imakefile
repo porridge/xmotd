@@ -1,49 +1,77 @@
-XCOMM -IMPORTANT-------------------------------------------------------
+XCOMM BUILD INSTRUCTIONS:
+XCOMM -------------------
+XCOMM Step 1. xmkmf -a
+XCOMM Step 2. make all 
 
-XCOMM If you wish to build with Motif, then uncomment the following line:
-XCOMM #define MOTIF
+XCOMM -----
+XCOMM NOTES
+XCOMM ----- 
+XCOMM If using /usr/openwin/bin/xmkmf, replace step 1 with:
+XCOMM 1. xmkmf; make makefiles; make includes; make depend
+XCOMM
+XCOMM If building with Motif and HTML replace step 2 with:
+XCOMM 2. make all EXTRA_DEFINES="-DMOTIF -DHAVE_HTML"
+XCOMM
+
+XCOMM CUSTOMIZING INSTRUCTIONS: To customize xmotd, uncomment
+XCOMM the "#define" statments appropriately.
 
 XCOMM If you wish to use an HTML widget instead of an ASCII text widget,
 XCOMM then uncomment the following line:
 XCOMM #define HAVE_HTML
 
-XCOMM -----------------------------------------------------------------
+XCOMM If you wish to use colour xpm pixmaps for the icon and have the
+XCOMM Xpm library installed, then uncomment the following line: 
+XCOMM #define HAVE_XPM
 
-XCOMM INSTRUCTIONS:
-XCOMM ============
-XCOMM 1. xmkmf
-XCOMM 2. make Makefiles
-XCOMM 3. make all 
+XCOMM If you wish to build with Motif, then uncomment the following line:
+XCOMM #define MOTIF
 
-XCOMM NOTE for step 3:
-XCOMM If you want to build xmotd with HTML support and Athena, use: 
-XCOMM 3. make all EXTRA_DEFINES="-DHAVE_HTML"
+XCOMM If compiling MOTIF under SOLARIS 2.x (or CDE on other platforms
+XCOMM (untested)),  uncomment the following line: 
+XCOMM #define SOLARIS2
 
-XCOMM Or, if you want to build xmotd with HTML support and with Motif, use:
-XCOMM 3. make all EXTRA_DEFINES="-DMOTIF -DHAVE_HTML"
+#ifdef MOTIF
+#ifdef SOLARIS2 
 
-XCOMM Another Note: If you are trying to compile with Motif, on a 
-XCOMM Solaris system, fiddle with the LOCAL_LIBRARIES setting (down
-XCOMM below)
+XCOMM These are set if you are building on Solaris 2.x/CDE. You may
+XCOMM have to set LD_LIBRARY_PATH when you run it (use a shell
+XCOMM wrapper around xmotd).
+
+ MOTIF_SOLARIS_LD_FLAG = -R/usr/dt/lib
+         MOTIF_LIB_DIR = -L/usr/dt/lib 
+         MOTIF_INCLUDE = -I/usr/dt/include
+#else
+
+XCOMM On other systems, if the Motif libs & includes are NOT installed
+XCOMM in /usr/lib and /usr/include then uncomment and fill-in the following
+XCOMM paths appropriately.
+
+XCOMM         MOTIF_LIB_DIR = -L
+XCOMM         MOTIF_INCLUDE = -I
+
+#endif
+#endif
+
+XCOMM Don't touch anything past this point unless you know what you're doing.
+XCOMM --x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--
 
 XCOMM          CC = purify gcc
 
-             SRCS = main.c xmotd.c changed.c textmode.c usage.c
+             SRCS = main.c xmotd.c changed.c textmode.c usage.c browser.c logo.c atom.c
+             OBJS = main.o xmotd.o changed.o textmode.o usage.o browser.o logo.o atom.o
             INCLS = maindefs.h patchlevel.h appdefs.h main.h
-             OBJS = main.o xmotd.o changed.o textmode.o usage.o
 
       CDEBUGFLAGS = -g
         MANSUFFIX = 8
 
-           SUBDIR = libhtmlw
-
-         MANIFEST = README ACKNOWLEDGEMENTS ChangeLog Imakefile Makefile  \
-					XMotd XMotd_motif xmotd.8 xlogo.bm $(SRCS) $(INCLUDES)
+         MANIFEST = README GNU ACKNOWLEDGEMENTS Imakefile browser\
+					Makefile XMotd XMotd_motif xmotd.8 xlogo.bm xlogo.xpm\
+					$(SRCS) $(INCLS)
 
 XCOMM No space after the equals-sign
-              VER =1.14b3
-             LITE =1.14b3
-	
+              VER =1.16
+             LITE =1.16
 
 .PRECIOUS: distrib
 
@@ -51,65 +79,47 @@ XCOMM No space after the equals-sign
         CCOPTIONS = -Aa -D_HPUX_SOURCE
 #endif
 
-#ifdef HAVE_HTML
-     HTML_LIB_DIR = ./$(SUBDIR)
-         HTML_LIB = htmlw
-   EXTRA_INCLUDES = -I$(HTML_LIB_DIR)
-         MAKELIST = $(HTML_LIB_DIR)
+#ifdef HAVE_XPM
+          XPM_LIB = -lXpm
+       XPM_DEFINE = -DHAVE_XPM
 #endif
 
-#ifdef MOTIF
-
 #ifdef HAVE_HTML
-    EXTRA_DEFINES = -DMOTIF -DHAVE_HTML
-#else
-    EXTRA_DEFINES = -DMOTIF
-#endif
+      HTML_DEFINE = -DHAVE_HTML
+     HTML_SUB_DIR = ./libhtmlw
+     HTML_DEP_LIB = htmlw
+     HTML_LIB_DIR = -L$(HTML_SUB_DIR)
+     HTML_INCLUDE = -I$(HTML_SUB_DIR)
+         HTML_LIB = -lhtmlw
 
-#else
-
-#ifdef HAVE_HTML
-    EXTRA_DEFINES = -DHAVE_HTML
-#endif
+         MAKELIST = $(HTML_SUB_DIR)           
 
 #endif
 
 #ifdef MOTIF
-
-#ifdef HAVE_HTML
-
-XCOMM For messed-up Solaris systems (like mine) try...
-XCOMM   LOCAL_LIBRARIES = -l$(HTML_LIB) -lXm -lXmu -lXt -lXext -lX11 -lsocket -lgen -lucb -L$(HTML_LIB_DIR) -L/usr/ucblib -R/usr/ucblib -R/usr/X11R6/lib
-
-XCOMM instead of the usual...
-  LOCAL_LIBRARIES = -l$(HTML_LIB) -lXm -lXmu -lXt -lXext -lX11 -L$(HTML_LIB_DIR)
-          DEPLIBS = $(HTML_LIB) 
-#else
-
-XCOMM   LOCAL_LIBRARIES = -lXm -lXmu -lXt -lSM -lICE -lXext  -lX11 
-  LOCAL_LIBRARIES = -lXm XawClientLibs
-
+    MOTIF_DEFINE = -DMOTIF
+       MOTIF_LIB = -lXm
+ LD_LIBRARY_PATH = $(MOTIF_SOLARIS_LD_FLAG)
 #endif
 
-#else
+    EXTRA_DEFINES = $(XPM_DEFINE) $(HTML_DEFINE) $(MOTIF_DEFINE)
+   MOTD_LIBRARIES = $(XPM_LIB)  $(HTML_LIB_DIR) $(HTML_LIB) $(MOTIF_LIB_DIR) $(MOTIF_LIB) 
+   EXTRA_INCLUDES = $(HTML_INCLUDE) $(MOTIF_INCLUDE)
 
-#ifdef HAVE_HTML
-   LOCAL_LIBRARIES = -l$(HTML_LIB)  XawClientLibs  -L$(HTML_LIB_DIR)
-           DEPLIBS = $(HTML_LIB)
-#else
-  LOCAL_LIBRARIES = XawClientLibs
-#endif
+XCOMM This is what the final link looks like:
+XCOMM LOCAL_LIBRARIES = -lXm -lXmu -lXt -lXext -lX11 -lsocket -lgen -lucb  -L/usr/ucblib -R/usr/ucblib -R/usr/X11R6/lib
 
-#endif
+  LOCAL_LIBRARIES = $(MOTD_LIBRARIES) XawClientLibs
+          DEPLIBS = $(HTML_DEP_LIB) 
 
 ComplexProgramTarget(xmotd)
-XCOMM InstallAppDefaults(XMotd)
+InstallAppDefaults(XMotd)
 
 #ifdef HAVE_HTML
-MakefileSubdirs($(HTML_LIB_DIR))
+MakefileSubdirs($(HTML_SUB_DIR))
 
 NormalLibraryObjectRule()
-	NamedTargetSubdirs(htmlw, $(HTML_LIB_DIR), , , )
+	NamedTargetSubdirs(htmlw, $(HTML_SUB_DIR), , , )
 #endif
 
 distrib: $(MANIFEST)
@@ -117,3 +127,8 @@ distrib: $(MANIFEST)
 
 lite: $(MANIFEST)
 	./distrib lite
+
+man: xmotd.8
+	rm -f xmotd-man.html xmotd-man.ps;
+#	nroff -man xmotd.8 | man2html >xmotd-man.html;
+	troff -man xmotd.8 | dpost >xmotd-man.ps;

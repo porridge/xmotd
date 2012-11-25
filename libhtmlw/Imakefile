@@ -1,0 +1,18 @@
+
+    LIB_TARGET = htmlw
+            CC = gcc -g $(EXTRA_INCLUDES)
+        RANLIB = ranlib
+
+XCOMM EXTRA_INCLUDES = -I/usr/X11R6/include
+
+          SRCS = HTML.c HTMLlists.c HTMLformat.c HTMLparse.c HTMLimages.c \
+                 HTMLwidgets.c HTML-PSformat.c DrawingArea.c HTMLjot.c \
+                 HTMLtable.c list.c
+
+          OBJS = HTML.o HTMLlists.o HTMLformat.o HTMLparse.o HTMLimages.o \
+                 HTMLwidgets.o HTML-PSformat.o DrawingArea.o HTMLjot.o \
+                 HTMLtable.o list.o
+
+NormalLibraryObjectRule()
+NormalLibraryTarget($(LIB_TARGET),$(OBJS))
+
