@@ -12,10 +12,10 @@
  * man-page or http://www.ee.ryerson.ca:8080/~elf/xmotd.html
  * */
 
-/* $Id: main.c,v 1.17 1999/11/23 22:55:14 elf Exp $ */
+/* $Id: main.c,v 1.19 2003/02/14 00:35:03 elf Exp elf $ */
 
 /*
- * Copyright 1993-97, 1999  Luis Fernandes <elf@ee.ryerson.ca> 
+ * Copyright 1993-97, 1999, 2003 Luis Fernandes <elf@ee.ryerson.ca> 
  *
  * Permission to use, copy, hack, and distribute this software and its
  * documentation for any purpose and without fee is hereby granted,
@@ -248,6 +248,8 @@ updateTimeStamp(char *motdfile)
   struct utimbuf ut;
   time_t now;
 
+/*   fprintf(stderr, "Updating timestamp %s now.\n", getTimeStampName() );  */
+
   now = time((time_t *)NULL);
 
   ut.actime = now;
@@ -262,11 +264,10 @@ updateTimeStamp(char *motdfile)
 		{
 		  FILE *fp;
 		  
-		  /* I know we're asking for trouble by not checking fp; but
-             since this runs from the system Xsession file, where are
-             we going to write the errors to?*/
+		  if((fp=fopen(motdfile,"w"))==NULL){
+			perror("xmotd");
+		  }
 		  
-		  fp=fopen(motdfile,"w");
 		  fclose(fp);
 
 		}
@@ -306,8 +307,6 @@ void
 Quit(Widget w, caddr_t call_data, caddr_t client_data)
 {
   extern char *txtbuf;
-  
-  updateTimeStamp(timeStamp);
   
   if(!app_res.periodic)
 	{

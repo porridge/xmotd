@@ -1,25 +1,18 @@
-XMOTD 1.16 README
+XMOTD 1.17.3 README                 http://www.ee.ryerson.ca/~elf/xmotd/
 
-December, 1999
+February 2003
 Luis Fernandes, <elf@ee.ryerson.ca>
+Ryerson University,
 Toronto, Canada
 
 xmotd is a message-of-the-day browser for X11 and
-dumb-terminals. Refer to: http://www.ee.ryerson.ca/~elf/xmotd/ for
-details.
+dumb-terminals. 
 
 WHAT'S NEW
 
- o xmotd checks whether another copy of itself is already running and
-   exits if there is (this usually happened when xmotd was run with
-   -wakeup and a user logged in and out multiple times within the
-   sleep-duration).
-
- o xmotd now supports the Editres protocol (i.e. X resources may be
-   edited via editres(1)).
-
- o -tail option allows the end of files to be watched; the text will
-   scroll to the bottom when xmotd pops up.
+1.17.3 fixes a timestamp bug introduced in 1.17.2. The patch was
+contributed by Marcin Owsiany and also Andy Roosen (who also added
+more features to xmotd; these will appear in a future version).
 
 REQUIREMENTS
 
@@ -36,9 +29,9 @@ BUILDING
 
 First, unpack the distribution with:
 
-    zcat xmotd-1.16.tar.gz | tar xvf -
+    zcat xmotd-1.17.x.tar.gz | tar xvf -
 
-A directory called xmotd-1.16 will be created; cd into that
+A directory called xmotd-1.17.x will be created; cd into that
 directory and to build the default flavour type:
 
     xmkmf -a; make all
@@ -57,17 +50,26 @@ xmotd can be built in different flavours:
 Refer to the commentary in the Imakefile for details on customizing
 the build for HTML, Motif and XPM support.
 
+INSTALLATION
+
 After the compilation is complete (ignore compilation warnings when
 the HTML widget is being compiled) and if you wish to install xmotd
 automatically, type:
 
     make install
 
+NOTE: that "make install" will replace your app-defaults file (if you
+have previously installed xmotd ) with the app-defaults in the
+distribution. If you have modified your app-defaults, make a copy
+before invoking the install.
+
+Alternatively, you can manually copy the xmotd binary to the install
+directory and the manual-page to the man8 directory.
+
 PLATFORMS
 
-xmotd was developed on a Sun SPARCstation 5 under X11R6.3 using gcc
-2.7.1 and emacs 19.34 and gdb. It has been sucessfully compiled under
-SunOS 4.1.4, Solaris 2.5.1 and 2.6 and Linux 2.30.
+It has been sucessfully compiled here at Ryerson under SunOS 4.1.4,
+Solaris 2.5.1, 2.6 and 2.8 and GNU/Linux 2.4.18.
 
 xmotd has also been successfully compiled on the following platforms:
 
@@ -91,7 +93,6 @@ This distribution contains the following files:
         xlogo.bm                (default bitmap, the "X"-logo)
         xlogo.xpm               (default pixmap used w/ xpm support)
         *.c, *.h                (source)
-        patchlevel.h            (version tag)
         browser                 (shell script)
         libhtmlw/               (NCSA HTML widget; not in 'lite' version)
 
@@ -121,7 +122,8 @@ xmotd may be customized completely via the command-line.
 
 COPYRIGHT (xmotd)
 
-xmotd Copyright 1993 (as xbanner), 1994-97, 1999 Luis Fernandes
+xmotd Copyright 1993 (released as xbanner, no public release)
+xmotd Copyright 1994-97, 1999, 2001, 2003 Luis Fernandes
 
 Permission to use, copy, hack, and distribute this software and its
 documentation for any purpose and without fee is hereby granted,
@@ -150,3 +152,6 @@ COPYRIGHT (HTML widget)
 libhtmlw is copyright (C) 1993, Board of Trustees of the University of
 Illinois. See the file libhtmlw/HTML.c for the complete text of the
 NCSA copyright.
+
+NOTE: THE HTML WIDGET IS NOT DISTRIBUTED IN THE "LITE" VERSION OF THE
+xmotd DISTRIBUTION, WHICH IS THEREFORE FULLY COMPLIANT WITH THE GPL.
