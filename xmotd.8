@@ -1,0 +1,406 @@
+.\" $Id: xmotd.8,v 1.10 1996/09/03 18:21:13 elf Exp $"
+.TH XMOTD 8 "Sep 1 1996" "X11 Release 6"
+.SH NAME
+xmotd \- message-of-the-day browser for X (and dumb terminals,
+VT100, etc.)
+
+.SH SYNOPSIS
+.B xmotd 
+[\fIX-toolkit options\fP] [-help] [-always] [-usedomains] [-stampfile
+\fIstamp-filename\fP] [-wakeup \fIsleep-period\fP]
+[-showfilename] [-warnfile \fIwarning-filename\fP [-paranoid] ] [-popdown \fItimeout\fP] [-bitmaplogo \fIbitmap-filename\fP] \fImotd-filename\fP [\fImotd-filename2\fP ...]
+
+.LP
+or
+.LP
+
+.B xmotd ...
+\fImotd-directoryname\fP
+
+.LP
+or
+.LP
+
+.B xmotd
+[-stampfile \fIstamp-filename\fP] [-wakeup \fIsleep-period\fP] \fImotd-filename\fP [\fImotd-filename2\fP ...]
+
+.SH DESCRIPTION
+.LP
+\fIxmotd\fP is a message-of-the-day browser for X11 and dumb
+terminals. Under X11, it displays a customizable bitmap in the
+top-left corner. It provides for up to 3 lines of title-text (the
+length of the text depends on the size of the font chosen). It has a
+next-message/dismiss-button below the bitmap and a read-only
+text-widget displays (optionally) a standard warning-message, and the
+message (or messages) of the day. The date of the message (and
+optionally, the filename) is displayed just above the text.
+
+.LP
+\fIxmotd\fP defaults to text-only mode (output to \fIstdout\fP) when
+it cannot connect to an X display. This mode is useful for running
+\fIxmotd\fP from user's \fI~/.login\fP file in cases where they can
+also login via dialup.
+
+.LP
+\fIxmotd\fP can be configured to always pop-up after login, or to
+pop-up only when the motd changes. It can also be configured to
+pop-down automatically (without user-intervention) after a specified
+delay. It can also be configured to run in the background and
+periodically check if the motd has changed and display it.
+
+.LP
+By default, \fIxmotd\fP displays a message only if the file(s) was
+updated since the last time the user read it.
+
+.LP
+If \fIxmotd\fP is used to display more than one file, the user is
+required to press \fI"Next Message"\fP to view the messages that follow;
+the button changes to \fI"Dismiss"\fP when the last message is displayed.
+
+.SH OPERATION
+.LP
+\fIxmotd\fP is usually run from the system \fIXsession\fP file via
+xdm(1) and/or from the user's \fI~/.login\fP file. At sites where xdm
+is not used, \fIxmotd\fP may be run from the user's \fI~/.xinitrc\fP
+where a (possibly) user may intentionally or accidently remove the
+xmotd command from the file.
+
+.LP
+When \fIxmotd\fP first runs, it creates a timestamp file (called
+\fI".xmotd"\fP, by default) in the user's home-directory. On
+subsequent invocations, \fIxmotd\fP uses the date of this file to
+decide whether or not the message-of-the-day (motd) files have been
+updated. If the date of the motd file is later than the date on the
+\fI"~/.xmotd"\fP file, then \fIxmotd\fP will display the motd file;
+otherwise it will silently exit (if there are no more files to be
+displayed).
+
+\fIxmotd\fP optionally displays messages marked-up with HTML. This
+support must be added at compile-time.
+
+.LP
+In cases where user's home-directories are shared (NFS mounted)
+across various (unique) domains, \fIxmotd\fP supports domain-name
+based time-stamping by creating timestamps with the appropriate
+domain-names appended and checks the dates of these timestamps with
+the date of the message-of-the-day file(s).
+
+.LP
+By default, \fIxmotd\fP pops-down only when the \fI"Dismiss"\fP
+button is clicked; the rest of the login-procedure then
+continues. This interactive behaviour can be overriden so \fIxmotd\fP
+will pop-down without user intervention, after a specified timeout
+period.
+
+.SH OPTIONS
+All the standard \fIXt\fP options are valid. In addition, the
+following options, which may also be set as resources in the
+app-defaults file (See RESOURCES), are available:
+
+.TP 8
+-always
+
+overrides \fIxmotd\fP's "smart" behavior; the \fI"~/.xmotd"\fP
+time-stamp is ignored and the message (or messages) is \fIalways\fP
+displayed. Zero-length (empty) files are displayed when this option
+is specified.
+
+.TP 8
+-bitmaplogo \fIbitmap-filename\fP 
+
+specifies that the bitmap in \fIbitmap-filename\fP is to be displayed
+in place of the default bitmap, the "X" logo.  Ideally, the specified
+bitmap should have a width and height of 100 pixels.
+
+.TP 8
+-help
+
+prints command-line usage.
+
+.TP 8
+-paranoid
+
+(used with \fI-warnfile\fP) displays the warning message
+unconditionally at every login (even when there are no messages to be
+displayed).
+
+
+.TP 8
+-popdown \fItimeout\fP 
+
+indicates that \fIxmotd\fP should exit without user intervention,
+\fItimeout\fP seconds after being invoked. The user can dismiss
+\fIxmotd\fP at any time before the timeout, by clicking on the
+\fI"Dismiss"\fP button.
+
+.TP 8
+-showfilename
+
+displays the filename (as it appears on the command-line), of the
+file currently being viewed, alongside the date.
+
+.TP 8
+-stampfile \fIfilename\fP 
+
+overrides the default timestamp filename, ".xmotd" and uses
+"\fIfilename\fP" instead.
+
+
+.TP 8
+-usedomains
+
+uses local domain-name based time-stamping in cases where user's
+home-directories are shared (NFS mounted) across various domains.
+Time-stamps are created (and checked) with appropriate domain-names
+appended.
+
+.TP 8
+-warnfile \fIwarning-filename\fP
+
+specifies a file containing a standard message used to warn users of
+the consequences of deviance and sundry unlawful things they should
+not even \fIthink\fP of doing on your network; your network's rules of
+use, information about disk quotas, modem charges and printer
+accounting fees (used with \fI-paranoid\fP option).
+
+.TP 8
+-wakeup \fIsleep-period\fP 
+
+causes \fIxmotd\fP to run in the background and wakeup periodically
+every \fIsleep-period\fP hours to check whether the message(s) on the
+command-line have been modified and therefore need to be
+(re-)displayed. The sleep period is specified as a floating point
+number where the fractional portion indicates the number of
+minutes. For example, a sleep-period of 0.25 indicates 15 minutes
+(one quarter of an hour) and a sleep-period of 1.5 indicates one and
+one-half hours.
+
+.TP 8
+\fImotd-filename [motd-filename2 ... ]\fP 
+
+one or more files may be specified. The file(s) contain the text of
+the message(s) of the day.
+
+.TP 8
+\fImotd-directoryname\fP 
+
+Instead of supplying one or more files on the command-line,
+\fIxmotd\fP may be supplied a directory-name containing file(s) to be
+displayed. \fIxmotd\fP will scan the directory and display all the
+files contained therein, that need to be displayed. This feature is
+useful when used with the -wakeup option; upon waking-up, \fIxmotd\fP
+will re-scan the directory for any files (including new files that
+have been added) that need to be displayed.
+
+.SH EXAMPLES
+.LP
+Give \fIxmotd\fP a geometry option to tell it to pop-up at a location
+other than 0,0 and read-in the message-of-the-day from the file
+"/usr/local/motd":
+.nf
+
+   xmotd -geometry +20+20 /usr/local/motd
+.fi
+.LP
+Always pop-up \fIxmotd\fP at login, ignoring the user's
+\fI"~/.xmotd"\fP timestamp-file and pop-down after 20 seconds:
+.nf
+
+   xmotd -geom +20+20 -always -popdown 20 /usr/local/motd
+.fi
+
+.LP
+Use a custom bitmap as the logo (the bitmap is in the file
+"/usr/local/xmotd.bm"):
+.nf
+
+   xmotd -geom +5+5 -bitmaplogo /usr/local/xmotd.bm /usr/local/motd
+.fi
+
+.LP
+In the following example, all the files in /usr/local/messages/ will
+be checked for modification times greater than the time-stamp and
+only those files will be displayed and every eight and a half hours,
+\fIxmotd\fP will check if any files have changed (or new ones added)
+and display them if necessary:
+.nf
+
+   xmotd -geom +5+5 -wakeup 8.5 /usr/local/messages/
+.fi
+
+To display a warning-message every time the user logs-in (even when
+no messages need to be displayed), and to display the filenames of
+the files being viewed, use:
+.nf
+
+   xmotd -warnfile /usr/local/WARNING -paranoid -showfilename \\
+      /usr/local/messages/*
+.fi
+
+X resources may be changed from the command-line using the \fI-xrm\fP
+option. This example illustrates how an xmotd can be customized
+exclusively from the command-line:
+
+.nf
+
+    /usr/X11/bin/xmotd -always \\
+        -xrm "*title.label: Top 10 Disk Hogs\n As of midnight\n " \\
+        -xrm "*title.foreground: yellow" \\
+        -xrm "*form.background: red" \\
+        -xrm "*title.background: red" \\
+        -xrm "*logo.background: pink" \\
+        -xrm "*text*font: -adobe-times-bold-*-normal-*-*-180-*" \\
+        -geometry 500x650-1-1 \\
+        -bitmaplogo /usr/common/choke.xbm 
+        -popdown 10 \\
+        /usr/common/accounting/top &
+
+.fi
+
+.SH RESOURCES
+The application class-name is XMotd.
+
+.LP
+The resource: \fIXMotd*always\fP (set to either \fITrue\fP or
+\fIFalse\fP) is equivalent to the \fI-always\fP command-line option.
+
+.LP
+The resource: \fIXMotd*popdown\fP (set to the number of seconds) is
+equivalent to the \fI-popdown\fP command-line option.
+
+.LP
+The resource: \fIXMotd*BitmapLogo\fP (set to the path and filename of
+the bitmap-file) is equivalent to the \fI-bitmaplogo\fP command-line
+option.
+
+.LP
+The resource: \fIXMotd*usedomains\fP (set to \fITrue/False\fP) is
+equivalent to the \fI-usedomains\fP command-line option.
+
+.LP
+The resource: \fIXMotd*showfilename\fP ((set to \fITrue/False\fP) is
+equivalent to the \fI-showfilename\fP command-line option.
+
+.LP
+The resource: \fIXMotd*paranoid\fP ((set to \fITrue/False\fP) is
+equivalent to the \fI-paranoid\fP command-line option.
+
+.LP
+The resource: \fIXMotd*warnfile\fP (set to the path and filename of
+the warning-file) is equivalent to the \fI-warnfile\fP command-line
+option.
+
+.LP
+The resource: \fIXMotd*wakeup\fP (set to an floating-point number
+representing hours) is equivalent to the \fI-wakeup\fP command-line
+option.
+
+.LP
+The resource: \fIXMotd*title.label\fP (set to a possibly multi-line
+string) may be used to customize the title).
+
+By default, the title is \fI"Message Of The Day\\n\\n\\n"\fP (the 2-character
+sequence, \fI"\\n"\fP, indicates a carriage-return).
+
+For example, if you want the motd-title to read:
+.nf
+
+         This is the
+      Message of the Day
+.fi
+
+the resource can be specified as:
+.nf
+
+       *title.label: \\       This is the\\nMessage of the Day\\n\\n
+.fi
+
+Note that the first backslash, '\\', quotes the leading spaces that indent the
+words, \fI"This is the"\fP.
+
+
+.SH WIDGET HIERARCHY
+The widget hierarchy is as follows (Class-name & object-name):
+.nf
+.ta .5i 1.0i 1.5i 2.0i
+XMotd xmotd 
+		Form form
+			Label logo
+			Label title
+			Label hline
+			Label info
+			Command quit 
+			Text text     OR       Html text
+.fi
+
+.SH FILES
+\fI$ProjectRoot/lib/X11/xdm/Xsession\fP 
+
+(where \fI$ProjectRoot\fP is \fI/usr/X11R6\fP or, perhaps \fI/usr\fP). 
+
+\fI$HOME/.xmotd\fP (default stamp-file)
+
+\fI$HOME/.login\fP
+
+.SH SEE ALSO
+X(1), login(1), bitmap(1X), xv(l), xpaint(l), cat(1), more(1), less(l)
+
+.SH NOTES
+
+The \fI-always\fP option is considered fascist; it is provided merely
+for completeness.
+
+Under dumb-terminal mode, all command-line options are ignored with
+the exception of \fI-stampfile\fP and \fI-wakeup\fP; the
+\fI-always\fP option is equivalent to cat'ing the motd from the
+\fI~/.login\fP file; and \fI-popdown\fP is not really relevant. Both
+\fI-warnfile\fP and \fI-paranoid\fP may be simulated with appropriate
+cat(1) and more(1) commands.
+
+Temporary messages/announcements that will soon go out of date,
+should be placed in individual files (not the motd file). When the
+announcement is outdated, the announcement-file can be deleted
+without interfering with the main motd file.  If, however, the
+temporary announcement were to be added to the main motd file, the
+announcement's removal would have caused the motd to be unnecessarily
+displayed (minus the removed announcement); this can be very
+unnerving (from my experience, at least).
+
+.SH BUGS
+
+There are no provisions for displaying embedded images and for
+following URLs in the HTML version of \fIxmotd\fP. 
+
+.SH QUOTE
+.nf
+
+    \fITo everything there is a season,
+    And a time to every purpose under heaven.\fP
+
+                                Ecclesiastes 3:1-4
+.fi
+
+
+.SH AUTHORS
+Luis Fernandes <elf@ee.ryerson.ca>
+
+Richard Deal <rdeal@atl.lmco.com> supplied code for
+directory-support.
+
+
+.SH COPYRIGHT
+
+Copyright 1993 (as xbanner), 1994, 1995, 1996, Luis Fernandes 
+
+Permission to use, copy, hack, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
+provided that the above copyright notice appear in all copies and
+that both that copyright notice and this permission notice appear in
+supporting documentation.
+
+The HTML widget Copyright 1993, Board of Trustees of the
+University of Illinois. See the file libhtmlw/HTML.c for the complete
+text of the NCSA copyright.
+
+This application is presented as is without any implied or written
+warranty.

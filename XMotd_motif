@@ -1,0 +1,62 @@
+!XMotd: Motif app-defaults for xmotd 1.13
+
+!TITLE
+!Use a backslash to quote leading spaces in the title
+
+*title*labelString: \       This is the\nMessage of the Day\n\n
+
+!BITMAP
+!If you have a custom bitmap you wish to display, uncomment the next
+!resource and correct the path- and file-name to point to the location
+!of your X-bitmap file. N.B.: the bitmap can also be specified with the 
+!"-bitmaplogo" command-line option.
+
+!*BitmapLogo: /usr/local/site.bm
+
+!overall-colour
+*form.background: lightsteelblue3
+
+!Used for a regular Text widget
+!The text-box that displays the motd
+*text.rows: 25
+*text.columns: 80
+*text*fontList: -*-times-medium-r-*-*-*-140-* 
+*text*wordWrap: False
+*text*background: white 
+*text*borderWidth: 0 
+*text*background: lightsteelblue1
+
+!Used for the HTML widget
+!Uncomment these, and comment-out the corresponding ones above
+!*text.width: 680
+!*text.height: 500
+!*text*borderWidth: 1
+
+!Additional resource for the title
+*title*fontList: -*-times-bold-i-*-*-*-240-* 
+*title*width: 500 
+*title*borderWidth: 0 
+*title*background: lightsteelblue3 
+
+!Resources for the bitmap
+*logo*background: lightsteelblue3
+*logo*borderColor: lightsteelblue3
+!The logo has a damned border which the following resource is 
+!supposed to eliminate. But IT DOESN'T THIS WORK?!!!!
+*logo*borderWidth: 0
+
+!The horizontal line
+*hline.width: 680 
+*hline.background: black 
+*hline.foreground: black 
+
+!The label that displays the date & filename (below the dismiss button)
+*info*fontList: -*-times-*-r-*-*-*-140-* 
+*info*background: lightsteelblue3
+
+!Quit Button
+*quit.fontList: -*-times-bold-i-*-*-*-240-*
+!(unfortunately the "Next Message" string is hard-coded)
+*quit.labelString: Dismiss
+*quit*foreground: lightcyan
+*quit*background: lightsteelblue3

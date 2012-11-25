@@ -1,0 +1,124 @@
+Wed Dec 20 18:41:38 1995  luis fernandes  <elf@kizin>
+
+	* main.c:
+	Some of the start-up code was re-written to fix the bug wherein the
+	last file of a multi-file series was not displayed.
+
+	Basically I create an array of strings 'msgs' (a subset of all the
+	files passed to xmotd) of only the files to be displayed (all the
+	files are in the array if -always is passed). And 'numsg' is the
+	number of files in this array. In this way, nextMessage() will always
+	know exactly how many files are to be displayed.
+
+	* xmotd.c:
+	nextMessage() was re-written to fix the bug wherein the last file of
+	a multi-file series was not displayed.
+
+Fri Dec 15 22:00:33 1995  luis fernandes  <elf@kizin>
+
+	* main.c: Initial revision
+
+Mon Oct 30 20:51:21 1995  luis fernandes  <elf@kizin>
+
+	* textmode.c:
+	If a file is not found, continue with the next file, rather than
+	exiting.
+
+	Update the time-stamp only if messages have been displayed (new var
+	displayed counts the number of displayed messages).
+
+	Exit, when all is said & done (runInTextMode() would return to
+	xmotd.c).
+
+Thu Oct 19 21:09:59 1995  luis fernandes  <elf@kizin>
+
+	* xmotd.c: HTML widget support added.
+
+Fri Sep 29 16:25:22 1995  luis fernandes  <elf@kizin>
+
+	* xmotd.c: 1.11 BETA. Motif source merged-in to main distribution.
+
+Thu Jun 15 22:09:46 1995  luis fernandes  <elf@kizin>
+
+	* xmotd.c:
+	New options: -showfilename, -warnfile, -paranoid added (shipped as
+	1.10)
+
+Wed May 10 16:54:26 1995  luis fernandes  <elf@kizin>
+
+	* changed.c:
+	Returns time_t of the motd file: if modification time of file is
+	greater than the modification time of time-stamp file; else it
+	returns 0.
+
+	* xmotd.c:
+	Defaults to running in text-mode when DISPLAY variable is not set.
+	"-usedomains" option for domain-name-based time-stamping.
+	Sequentially display more than one motd file.
+	The date of the file is displayed.
+
+Tue Mar 14 18:08:19 1995  luis fernandes  <elf@kizin>
+
+	* textmode.c: Initial revision
+
+	* xmotd.8: 10.1 beta release
+
+Thu Jan 19 20:35:49 1995  luis fernandes  <elf@kizin>
+
+	* README: Initial revision
+
+Mon Oct 31 16:47:56 1994  luis fernandes  <elf@kizin>
+
+	* xmotd.c:
+	Check for missing motd-filename *after* X-cmdline options parsed;
+	change int to unsigned int for width & height of user-specified
+	bitmap.
+
+Mon Oct 24 20:25:48 1994  luis fernandes  <elf@kizin>
+
+	* xmotd.8:
+	Added into abt. zero-length files being ignored; added COPYRIGHT
+
+	* xmotd.c:
+	Using calloc instead of malloc; added +1 for NULL in calloc (purify
+	would have caught this).  Zero-length motd's are ignored unless
+	"-always" is specified.
+
+Thu Oct 20 22:35:32 1994  luis fernandes  <elf@kizin>
+
+	* xmotd.c: "mlabel" widget-name changed to "title".
+
+	* xmotd.8: mlabel changed to title in WIDGET HIERARCHY
+
+Tue Oct 18 20:37:13 1994  luis fernandes  <elf@kizin>
+
+	* xmotd.c:
+	The motd-title can now be specified as a resource (mlabel.label)
+
+	* xmotd.8: Change logo-->bitmaplogo
+
+	* xmotd.c:
+	Changed resource & cmd-line option from "logo" to "bitmaplogo".
+
+Mon Oct 17 22:59:14 1994  luis fernandes  <elf@kizin>
+
+	* xmotd.8: update for -logo option.
+
+	* xmotd.c:
+	Bitmap-logo can now be specified as a command-line option "-logo" (or
+	as a resource)
+
+Sat Oct 15 19:03:00 1994  luis fernandes  <elf@kizin>
+
+	* xmotd.c:
+	Patched for compiling under HP/UX; compiled under X11R6; released as
+	xmotd 1.1.
+
+	* xmotd.8: Initial revision
+
+Tue Apr  5 20:31:10 1994  luis fernandes  <elf@kizin>
+
+	* xmotd.c: First release; added -popdown and -help options.
+
+	* changed.c, xmotd.c: Initial revision
+
