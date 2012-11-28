@@ -29,7 +29,6 @@
 
 /* $Id: logo.c,v 1.2 1997/07/18 01:23:55 elf Exp $ */
 #include <stdio.h>
-#include <stdlib.h>
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
 

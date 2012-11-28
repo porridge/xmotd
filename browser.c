@@ -32,8 +32,6 @@
 
 #ifdef HAVE_HTML
 
-#include <sys/types.h>
-#include <unistd.h>
 #include <stdio.h>
 #include "maindefs.h"
 #include "libhtmlw/HTML.h"

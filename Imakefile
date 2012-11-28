@@ -22,7 +22,7 @@ XCOMM #define HAVE_HTML
 
 XCOMM If you wish to use colour xpm pixmaps for the icon and have the
 XCOMM Xpm library installed, then uncomment the following line: 
-#define HAVE_XPM
+XCOMM #define HAVE_XPM
 
 XCOMM If you wish to build with Motif, then uncomment the following line:
 XCOMM #define MOTIF
@@ -76,9 +76,7 @@ XCOMM No space after the equals-sign
 .PRECIOUS: distrib
 
 #ifdef HPArchitecture
-#ifndef LinuxArchitecture
         CCOPTIONS = -Aa -D_HPUX_SOURCE
-#endif
 #endif
 
 #ifdef HAVE_XPM
@@ -111,7 +109,7 @@ XCOMM No space after the equals-sign
 XCOMM This is what the final link looks like:
 XCOMM LOCAL_LIBRARIES = -lXm -lXmu -lXt -lXext -lX11 -lsocket -lgen -lucb  -L/usr/ucblib -R/usr/ucblib -R/usr/X11R6/lib
 
-  LOCAL_LIBRARIES = $(MOTD_LIBRARIES) $(XAWLIB) $(XMULIBONLY) $(XTOOLONLYLIB) $(XONLYLIB)
+  LOCAL_LIBRARIES = $(MOTD_LIBRARIES) XawClientLibs
           DEPLIBS = $(HTML_DEP_LIB) 
 
 ComplexProgramTarget(xmotd)
@@ -134,9 +132,6 @@ XCOMM Generate man-page
 man: xmotd.8
 	rm -f xmotd-man.ps;
 	troff -mansun xmotd.8 |dpost >xmotd-mansun.ps
-
-xmotd.man: xmotd.8
-	cp $< $@
 
 XCOMM This target builds the java distribution, Wed Sep 26 19:24:51 2001
 java-distrib:
