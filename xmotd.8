@@ -5,17 +5,17 @@ xmotd \- message-of-the-day browser for X (and dumb terminals,
 VT100, etc.)
 
 .SH SYNOPSIS
-.B /usr/local/bin/xmotd 
+.B xmotd 
 [\fBX-toolkit options\fP] [\fBxmotd-options\fP] \fIfile\fP
 [\fIfile2\fP ... ]
 
-.B /usr/local/bin/xmotd 
+.B xmotd 
 [\fBX-toolkit options\fP] [\fBxmotd-options\fP] \fIdirectory\fP
 
 .PP
 or (in text-mode)
 
-.B /usr/local/bin/xmotd
+.B xmotd
 [\fB-stampfile\fP \fIstamp-file\fP] [\fB-wakeup\fP \fIsleep-period\fP]
 \fIfile\fP [\fIfile2\fP ...]
 
@@ -297,7 +297,7 @@ option. This example (typed as a single line) illustrates how
 
 .nf
 
-    /usr/local/bin/xmotd -always \\
+    xmotd -always \\
         -xrm "*title.label: Top 10 Disk Hogs\\n As of midnight\\n " \\
         -xrm "*title.foreground: yellow" \\
         -xrm "*form.background: red" \\
