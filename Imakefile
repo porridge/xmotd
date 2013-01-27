@@ -22,7 +22,7 @@ XCOMM #define HAVE_HTML
 
 XCOMM If you wish to use colour xpm pixmaps for the icon and have the
 XCOMM Xpm library installed, then uncomment the following line: 
-XCOMM #define HAVE_XPM
+#define HAVE_XPM
 
 XCOMM If you wish to build with Motif, then uncomment the following line:
 XCOMM #define MOTIF

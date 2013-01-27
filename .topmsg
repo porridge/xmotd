@@ -1,0 +1,6 @@
+From: Marcin Owsiany <marcin@owsiany.pl>
+Subject: [PATCH] debian/enable-xpm
+
+Enable XPM support.
+
+Signed-off-by: Marcin Owsiany <marcin@owsiany.pl>
