@@ -1,0 +1,7 @@
+From: Marcin Owsiany <marcin@owsiany.pl>
+Subject: [PATCH] debian/html-support-gone
+
+Change the manpage to reflect the fact that HTML support is not present in the version shipped by Debian.
+This is due to licensing issues.
+
+Signed-off-by: Marcin Owsiany <marcin@owsiany.pl>
