@@ -1,0 +1,7 @@
+From: Marcin Owsiany <marcin@owsiany.pl>
+Subject: [PATCH] bugfix/add-missing-includes
+
+Add mising includes.
+Their lack caused build failures on architectures where sizeof(int) != sizeof(void*).
+
+Signed-off-by: Marcin Owsiany <marcin@owsiany.pl>
