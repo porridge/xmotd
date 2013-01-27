@@ -1,0 +1,7 @@
+From: Marcin Owsiany <marcin@owsiany.pl>
+Subject: [PATCH] bugfix/hppa-build
+
+Fix the linux on hppa build.
+Remove the assumption that hp arch == hp-ux.
+
+Signed-off-by: Marcin Owsiany <marcin@owsiany.pl>

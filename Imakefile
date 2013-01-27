@@ -76,7 +76,9 @@ XCOMM No space after the equals-sign
 .PRECIOUS: distrib
 
 #ifdef HPArchitecture
+#ifndef LinuxArchitecture
         CCOPTIONS = -Aa -D_HPUX_SOURCE
+#endif
 #endif
 
 #ifdef HAVE_XPM
