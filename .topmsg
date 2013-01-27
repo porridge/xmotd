@@ -1,0 +1,6 @@
+From: Marcin Owsiany <marcin@owsiany.pl>
+Subject: [PATCH] bugfix/fine-grain-x-deps
+
+Make the X library dependencies more fine-grained.
+
+Signed-off-by: Marcin Owsiany <marcin@owsiany.pl>
