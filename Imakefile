@@ -133,6 +133,9 @@ man: xmotd.8
 	rm -f xmotd-man.ps;
 	troff -mansun xmotd.8 |dpost >xmotd-mansun.ps
 
+xmotd.man: xmotd.8
+	cp $< $@
+
 XCOMM This target builds the java distribution, Wed Sep 26 19:24:51 2001
 java-distrib:
 	tar zcvf jmotd-0.55.tar.gz jmotd/README jmotd/logo.gif jmotd/xmotd* jmotd/HistoryItem*

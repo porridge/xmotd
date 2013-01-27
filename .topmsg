@@ -1,0 +1,8 @@
+From: Marcin Owsiany <marcin@owsiany.pl>
+Subject: [PATCH] bugfix/build-manpage
+
+Add a target to create xmotd.man from xmotd.8
+The build process seems to be broken and this is the easiest workaround I could
+find.
+
+Signed-off-by: Marcin Owsiany <marcin@owsiany.pl>
