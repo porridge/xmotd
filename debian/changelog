@@ -1,3 +1,9 @@
+xmotd (1.17.3b-6) experimental; urgency=low
+
+  * Switched to using topgit and dh(1) with dh-autoreconf
+
+ -- Marcin Owsiany <porridge@debian.org>  Fri, 22 Feb 2013 08:48:48 +0000
+
 xmotd (1.17.3b-5) unstable; urgency=high
 
   * Patched to include necessary headers, which fixes segfault on x86_64,

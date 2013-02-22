@@ -1,73 +1,30 @@
 #!/usr/bin/make -f
 # xmotd package rules file
 
-#export DH_VERBOSE=1
-
-#########################################################################
-#
-# Pay attention to $(DEB_BUILD_OPTIONS)
-#
-# By default use -g -Wall -O2 and strip binaries:
-CDEBUGFLAGS = -g -Wall
-# 
-# * if noopt   is specified, use -O0 instead of -O2
-# 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
- CDEBUGFLAGS += -O0
-else
- CDEBUGFLAGS += -O2
+ifeq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+ CCOPTIONS = -O2
 endif
-#
-# * if nostrip is specified, don't strip
-#    (The upstream makefile doesn't strip, so dh_strip takes care of it
-#    appropriately)
-#
-#########################################################################
 
-build: build-stamp
-build-stamp:
-	dh_testdir
-	xmkmf -a
-	$(MAKE) CDEBUGFLAGS="$(CDEBUGFLAGS)"
-	touch build-stamp
+-include /usr/share/topgit/tg2quilt.mk
+/usr/share/topgit/tg2quilt.mk:
 
-clean:
-	dh_testdir
-	dh_testroot
-	[ ! -f Makefile ] || $(MAKE) clean
-	dh_clean build-stamp Makefile XMotd.ad
+%:
+	dh $@ --with autoreconf
 
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
+override_dh_autoreconf:
+	dh_autoreconf xmkmf -- -a
+
+override_dh_auto_build:
+	$(MAKE) CDEBUGFLAGS="-g -Wall" CCOPTIONS="$(CCOPTIONS)"
 	ln -sf XMotd XMotd.ad
+	
+override_dh_auto_clean:
+	rm -f XMotd.ad
+	dh_auto_clean
+
+override_dh_auto_install:
 	$(MAKE) install DESTDIR=debian/xmotd BINDIR=/usr/bin
 	install -d debian/xmotd/usr/share/applications
 	install -d debian/xmotd/usr/share/pixmaps
 	install -m 0644 debian/xmotd.desktop debian/xmotd/usr/share/applications
 	install -m 0644 debian/xmotd.xpm     debian/xmotd/usr/share/pixmaps
-	rm -f XMotd.ad
-
-binary-indep:
-# We have no architecture-independent packages here.
-
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installdocs README
-	dh_installman xmotd.8
-	dh_installmenu
-	dh_installchangelogs
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_desktop
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
