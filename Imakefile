@@ -137,6 +137,8 @@ man: xmotd.8
 
 xmotd.man: xmotd.8
 	cp $< $@
+clean::
+	rm -f xmotd.man
 
 XCOMM This target builds the java distribution, Wed Sep 26 19:24:51 2001
 java-distrib:
