@@ -5,6 +5,8 @@ Maintainer: Marcin Owsiany <porridge@debian.org>
 Standards-Version: 3.7.3
 Build-Depends: debhelper (>= 9), dh-autoreconf, libxaw7-dev, libxmu-dev, libxpm-dev, libxt-dev, xutils-dev
 Homepage: http://www.ee.ryerson.ca/~elf/xmotd/
+Vcs-Git: git://github.com/porridge/xmotd.git
+Vcs-Browser: https://github.com/porridge/xmotd
 
 Package: xmotd
 Architecture: any
