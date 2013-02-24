@@ -6,8 +6,11 @@ xmotd (1.17.3b-6) experimental; urgency=low
   * Added Vcs-* fields.
   * Bumped Standards-Version: to 3.9.4 (no changes needed).
   * Ignore the patches directory.
+  * Remove article from description synopsis.
+  * Fix typo found by lintian.
+  * Improve flags handling.
 
- -- Marcin Owsiany <porridge@debian.org>  Sun, 24 Feb 2013 11:19:32 +0000
+ -- Marcin Owsiany <porridge@debian.org>  Sun, 24 Feb 2013 13:39:15 +0000
 
 xmotd (1.17.3b-5) unstable; urgency=high
 
