@@ -1,0 +1,6 @@
+From: Marcin Owsiany <marcin@owsiany.pl>
+Subject: [PATCH] bugfix/typos
+
+Fix typo found by lintian.
+
+Signed-off-by: Marcin Owsiany <marcin@owsiany.pl>
