@@ -1,10 +1,6 @@
 #!/usr/bin/make -f
 # xmotd package rules file
 
-ifeq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
- CCOPTIONS = -O2
-endif
-
 -include /usr/share/topgit/tg2quilt.mk
 /usr/share/topgit/tg2quilt.mk:
 
@@ -15,7 +11,7 @@ override_dh_autoreconf:
 	dh_autoreconf xmkmf -- -a
 
 override_dh_auto_build:
-	$(MAKE) CDEBUGFLAGS="-g -Wall" CCOPTIONS="$(CCOPTIONS)"
+	$(MAKE) CDEBUGFLAGS="-g -Wall" CCOPTIONS="$$(dpkg-buildflags --get CFLAGS)" LOCAL_LDFLAGS="$$(dpkg-buildflags --get LDFLAGS)"
 	ln -sf XMotd XMotd.ad
 	
 override_dh_auto_clean:
