@@ -1,0 +1,15 @@
+xmotd Debian source package
+---------------------------
+
+This is a standard 3.0 (quilt) source package.
+
+The quilt series is generated from the Git repository, using TopGit.  This
+process is documented in /usr/share/doc/topgit/HOWTO-tg2quilt.gz
+
+This package uses the following branch layout:
+
+- upstream: tracks upstream versions
+- bugfix/* debian/* feature/*: topgit topic branches, one for quilt patch
+- master: debianized source, with the topic branches merged in
+
+ -- Marcin Owsiany <porridge@debian.org>; Sat, 23 Feb 2013 19:59:57 +0000
