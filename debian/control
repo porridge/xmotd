@@ -11,7 +11,7 @@ Vcs-Browser: https://github.com/porridge/xmotd
 Package: xmotd
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: a message of the day browser for X
+Description: message of the day browser for X
  Xmotd is a message-of-the-day browser for X11 (with additional
  sysvnews-like support for dumb terminals).  It displays a customizable
  message box which displays each message-of-the-day until the user has
