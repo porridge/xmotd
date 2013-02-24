@@ -1,8 +1,13 @@
 xmotd (1.17.3b-6) experimental; urgency=low
 
   * Switched to using topgit and dh(1) with dh-autoreconf
+  * bugfix/build-manpage.diff: Also add clean target.
+  * Added a README.source file.
+  * Added Vcs-* fields.
+  * Bumped Standards-Version: to 3.9.4 (no changes needed).
+  * Ignore the patches directory.
 
- -- Marcin Owsiany <porridge@debian.org>  Fri, 22 Feb 2013 08:48:48 +0000
+ -- Marcin Owsiany <porridge@debian.org>  Sun, 24 Feb 2013 11:19:32 +0000
 
 xmotd (1.17.3b-5) unstable; urgency=high
 
