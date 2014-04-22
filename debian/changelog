@@ -1,3 +1,11 @@
+xmotd (1.17.3b-7) unstable; urgency=low
+
+  * Bumped standards-version
+  * Upload to sid
+  * Fixed path to icon in menu file
+
+ -- Marcin Owsiany <porridge@debian.org>  Tue, 22 Apr 2014 19:57:06 +0200
+
 xmotd (1.17.3b-6) experimental; urgency=low
 
   * Switched to using topgit and dh(1) with dh-autoreconf

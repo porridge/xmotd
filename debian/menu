@@ -2,5 +2,5 @@
  section="Applications/Viewers" \
  title="Xmotd" \
  command="xmotd /etc/motd" \
- icon="xmotd.xpm" \
+ icon="/usr/share/pixmaps/xmotd.xpm" \
  longtitle="Message of the day viewer for X"
