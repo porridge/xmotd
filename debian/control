@@ -11,8 +11,8 @@ Build-Depends: debhelper (>= 9),
                libxt-dev, 
                xutils-dev
 Homepage: http://www.ee.ryerson.ca/~elf/xmotd/
-Vcs-Git: git://github.com/porridge/xmotd.git
-Vcs-Browser: https://github.com/porridge/xmotd
+Vcs-Git: git://github.com/hugo6390/xmotd.git
+Vcs-Browser: https://github.com/hugo6390/xmotd
 
 Package: xmotd
 Architecture: any
