@@ -1,3 +1,12 @@
+xmotd (1.17.3b-8) unstable; urgency=low
+
+  * debian/control
+    - New maintainer (Hugo Lefeuvre) (Closes: #685225).
+  * debian/changelog
+    - Added a line to signal the adoption.
+
+ -- Hugo Lefeuvre <hugo6390@orange.fr>  Sat, 14 Jun 2014 15:41:41 +0200
+
 xmotd (1.17.3b-7) unstable; urgency=low
 
   * Bumped standards-version
