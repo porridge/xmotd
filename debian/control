@@ -1,12 +1,18 @@
 Source: xmotd
 Section: x11
 Priority: optional
-Maintainer: Marcin Owsiany <porridge@debian.org>
+Maintainer: Hugo Lefeuvre <hugo6390@orange.fr>
 Standards-Version: 3.9.5
-Build-Depends: debhelper (>= 9), dh-autoreconf, libxaw7-dev, libxmu-dev, libxpm-dev, libxt-dev, xutils-dev
+Build-Depends: debhelper (>= 9), 
+               dh-autoreconf, 
+               libxaw7-dev, 
+               libxmu-dev, 
+               libxpm-dev, 
+               libxt-dev, 
+               xutils-dev
 Homepage: http://www.ee.ryerson.ca/~elf/xmotd/
-Vcs-Git: git://github.com/porridge/xmotd.git
-Vcs-Browser: https://github.com/porridge/xmotd
+Vcs-Git: git://github.com/hugo6390/xmotd.git
+Vcs-Browser: https://github.com/hugo6390/xmotd
 
 Package: xmotd
 Architecture: any
